@@ -1,0 +1,6 @@
+d3.select('.main-svg')
+    .append('circle')
+    .attr('cx', 50)
+    .attr('cy', 50)
+    .attr('r', 30)
+    .attr('fill', 'green')

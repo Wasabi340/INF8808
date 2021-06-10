@@ -1,2 +1,10 @@
 # INF8808
-Final Project
+
+Final project
+
+## Usage
+
+```bash
+npm run dev
+```
+
