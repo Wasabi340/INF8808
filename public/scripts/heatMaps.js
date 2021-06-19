@@ -137,12 +137,17 @@ function handleMouseOut(){
 
 function handleMouseClick(g, left, right){
     d3.select(g.parentNode).select('.toggle')
+    .transition()
+    .duration(100)
     .attr('cx', (d) => {
         d.on = d.on || false
         let result =  d.on? left : right
         d3.select(g.parentNode).select('.switch')
         .attr('fill', d.on? 'silver' : 'black')
         d.on = !d.on
+
+        console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
+
         return result
     })
 }
