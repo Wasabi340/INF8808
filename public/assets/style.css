@@ -5,23 +5,51 @@
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "menu menu menu"
-    "heat-maps line-graphs line-graphs"
-    "heat-maps highlight-points highlight-points"
-    "heat-maps algorithm algorithm"
-    "heat-maps metric equation";
+  "menu menu menu"
+  "heat-maps line-graphs line-graphs"
+  "heat-maps highlight-points highlight-points"
+  "heat-maps algorithm algorithm"
+  "heat-maps metric equation";
 }
 
-.highlight-points { grid-area: highlight-points; background-color: aqua; }
+.highlight-points {
+  grid-area: highlight-points;
+  border-style: solid;
+  border-color: black;
+}
 
-.metric { grid-area: metric; background-color: red; }
+.metric { 
+  grid-area: metric;
+  border-style: solid;
+  border-color: black;
+}
 
-.equation { grid-area: equation; background-color: green; }
+.equation { 
+  grid-area: equation;
+  border-style: solid;
+  border-color: black;
+}
 
-.algorithm { grid-area: algorithm; background-color: purple; }
+.algorithm { 
+  grid-area: algorithm;
+  border-style: solid;
+  border-color: black;
+}
 
-.menu { grid-area: menu; background-color: orange; }
+.menu { 
+  grid-area: menu;
+  border-style: solid;
+  border-color: black;
+}
 
-.line-graphs { grid-area: line-graphs; background-color: blue; }
+.line-graphs { 
+  grid-area: line-graphs;
+  border-style: solid;
+  border-color: black;
+}
 
-.heat-maps { grid-area: heat-maps; background-color: pink; }
+.heat-maps { 
+  grid-area: heat-maps;
+  border-style: solid;
+  border-color: black;
+}
