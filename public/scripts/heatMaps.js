@@ -88,6 +88,11 @@ export function build () {
     .attr('y', 10)
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'middle')
+
+    let switchWidth = margin.right*maxWidth * 0.75
+    
+    let left = maxWidth - margin.right*maxWidth/2 - switchWidth*0.30
+    let right = maxWidth - margin.right*maxWidth/2 + switchWidth*0.30
     
     let switches = groups.selectAll('rect.switch')
     switches.attr('width', margin.right*maxWidth * 0.75)
@@ -99,19 +104,15 @@ export function build () {
     .attr('stroke-width', 1)
     .attr('rx', 10)
     .attr('ry', 10)
+    .on('click', function() { handleMouseClick(this, left, right) })
     
     let toggles = groups.selectAll('circle.toggle')
-    
-    let switchWidth = margin.right*maxWidth * 0.75
-    
-    let left = maxWidth - margin.right*maxWidth/2 - switchWidth*0.30
-    let right = maxWidth - margin.right*maxWidth/2 + switchWidth*0.30
     
     toggles.attr('cx', left)
     .attr('cy', 10)
     .attr('r', 8)
     .attr('fill', 'white')
-    .on('click', function() { handleMouseClick(this, left, right, switches) })
+    .on('click', function() { handleMouseClick(this, left, right) })
     
     let rects = groups.selectAll('rect.map')
     rects.attr('width', maxWidth*(1-margin.left-margin.right)/24)
@@ -134,8 +135,8 @@ function handleMouseOut(){
     .attr('stroke', 'none')
 }
 
-function handleMouseClick(g, left, right, switches){
-    d3.select(g)
+function handleMouseClick(g, left, right){
+    d3.select(g.parentNode).select('.toggle')
     .attr('cx', (d) => {
         d.on = d.on || false
         let result =  d.on? left : right
