@@ -1,0 +1,27 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 25% 25% 50%;
+  grid-template-rows: 5vh 50vh 8vh 8vh 27vh;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "menu menu menu"
+    "heat-maps line-graphs line-graphs"
+    "heat-maps highlight-points highlight-points"
+    "heat-maps algorithm algorithm"
+    "heat-maps metric equation";
+}
+
+.highlight-points { grid-area: highlight-points; background-color: aqua; }
+
+.metric { grid-area: metric; background-color: red; }
+
+.equation { grid-area: equation; background-color: green; }
+
+.algorithm { grid-area: algorithm; background-color: purple; }
+
+.menu { grid-area: menu; background-color: orange; }
+
+.line-graphs { grid-area: line-graphs; background-color: blue; }
+
+.heat-maps { grid-area: heat-maps; background-color: pink; }
