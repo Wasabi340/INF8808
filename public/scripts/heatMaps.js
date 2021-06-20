@@ -47,7 +47,7 @@ export function build () {
     let colorScale = d3.scaleLinear()
     .domain([0, 0.33, 0.66, 1])
     .range(['blue', 'green', 'yellow', 'red'])
-    
+
     let init = g.selectAll('g')
     .data(fakeData.studyCases)
     .enter()
@@ -89,15 +89,15 @@ export function build () {
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'middle')
 
-    let switchWidth = margin.right*maxWidth * 0.75
+    let switchWidth = margin.right*maxWidth * 0.60
     
-    let left = maxWidth - margin.right*maxWidth/2 - switchWidth*0.30
-    let right = maxWidth - margin.right*maxWidth/2 + switchWidth*0.30
+    let left = maxWidth - margin.right*maxWidth/2 - switchWidth/2 + 10
+    let right = maxWidth - margin.right*maxWidth/2 + switchWidth/2 - 10
     
     let switches = groups.selectAll('rect.switch')
-    switches.attr('width', margin.right*maxWidth * 0.75)
+    switches.attr('width', switchWidth)
     .attr('height', 20)
-    .attr('x', maxWidth - margin.right*maxWidth/2 - margin.right*maxWidth * 0.75/2)
+    .attr('x', maxWidth - margin.right*maxWidth/2 - margin.right*maxWidth * 0.60/2)
     .attr('y', 0)
     .attr('fill', 'silver')
     .attr('stroke', 'black')
