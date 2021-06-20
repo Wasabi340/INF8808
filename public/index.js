@@ -4,7 +4,7 @@ import * as lineGraphs from './scripts/lineGraphs.js'
 //initialize each svg
 d3.selectAll('svg')
 .attr('width', '100%')
-.attr('height', '100%')
+.attr('height', '200%')
 
 function build(){
     heatMaps.build()
