@@ -44,4 +44,8 @@ export function build () {
     .data(fakeData.studyCases)
     .enter()
     .append('g')
+
+    d3.select('.line-graphs svg')
+    .attr('width', '100%')
+    .attr('height', '100%')
 }
