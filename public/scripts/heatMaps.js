@@ -25,6 +25,10 @@ function getFakeData(){
 
 export function build () {
     console.log('building heatmaps')
+
+    d3.select('.heat-maps svg')
+    .attr('width', '100%')
+    .attr('height', '200%')
     
     let g = d3.select('.heat-maps svg')
     
