@@ -10,6 +10,7 @@
   "heat-maps highlight-points highlight-points"
   "heat-maps algorithm algorithm"
   "heat-maps metric equation";
+  overflow: hidden;
 }
 
 .highlight-points {
@@ -53,7 +54,9 @@
   grid-area: heat-maps;
   border-style: solid;
   border-color: black;
-  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  direction: rtl;
 }
 
 body{

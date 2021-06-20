@@ -1,10 +1,13 @@
+//let rgb = d3.select(this).attr('fill').match(/\d+/g);
+//return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2] < 60 ? 'white' : 'black'
+
 function getFakeData(){
     
     let data = {
         studyCases: []
     }
     
-    for(let i = 0; i < 20; i++){
+    for(let i = 0; i < 40; i++){
         
         data.studyCases.push({
             name:`Case ${i+1}`,
@@ -30,8 +33,8 @@ export function build () {
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
     let margin = {
-        top:0.05,
-        bottom:0,
+        top:0.03,
+        bottom:0.03,
         left:0.20,
         right:0.20
     }
@@ -125,14 +128,12 @@ function handleMouseOver(){
     d3.select(this)
     .attr('height', 30)
     .attr('transform', 'translate(0, -5)')
-    .attr('stroke', 'black')
 }
 
 function handleMouseOut(){
     d3.select(this)
     .attr('height', 20)
     .attr('transform', 'translate(0, 0)')
-    .attr('stroke', 'none')
 }
 
 function handleMouseClick(g, left, right){
