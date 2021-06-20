@@ -46,12 +46,14 @@
   grid-area: line-graphs;
   border-style: solid;
   border-color: black;
+  overflow: auto;
 }
 
 .heat-maps { 
   grid-area: heat-maps;
   border-style: solid;
   border-color: black;
+  overflow: auto;
 }
 
 body{
