@@ -48,6 +48,17 @@ export function build () {
     .extent([[margin.left*maxWidth,margin.top*maxHeight],[maxWidth-margin.right*maxWidth,maxHeight-margin.bottom*maxHeight]])
     .on("end", updateChart);
     
+    g.append('defs').append('svg:clipPath')
+    .attr('id','clip')
+    .append('svg:rect')
+    .attr('width', maxWidth-margin.right*maxWidth - margin.left*maxWidth)
+    .attr('height', maxHeight - margin.top*maxHeight)
+    .attr("x", margin.left*maxWidth)
+    .attr("y", margin.top*maxHeight)
+
+    g = g.append('g')
+    .attr("clip-path", "url(#clip)");
+
     g.append('g')
     .attr('class','brush')
     .call(brush)
