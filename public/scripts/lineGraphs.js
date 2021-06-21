@@ -22,6 +22,10 @@ let globalX;
 let globalG;
 let globalBrush;
 export function build () {
+    //TODO these two variables are arbitrary to set the graphs to their proper size, find a way to set it 
+    //Using maxHeight and other variables
+    let windowHeight = [0,7500];
+    let yAxisHeight = [150,20]
     console.log('building linegraphs')
     d3.select('.line-graphs svg')
     .attr('width', '100%')
@@ -41,7 +45,7 @@ export function build () {
 
     let graphScale = d3.scaleLinear()
     .domain([0, fakeData.graphs.length])
-    .range([0, 7500]);
+    .range(windowHeight);
 
     let init = g.selectAll('g')
     .data(fakeData.graphs)
@@ -67,7 +71,7 @@ export function build () {
 
     let y = d3.scaleLinear()
     .domain([0, 100])
-    .range([150, 20]);
+    .range(yAxisHeight);
 
     let yAxis = init.append("g")
     .attr("transform", "translate("+margin.left*maxWidth+",0)")
