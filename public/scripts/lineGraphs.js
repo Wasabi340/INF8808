@@ -34,7 +34,7 @@ export function build () {
         top:0.05,
         bottom:0,
         left:0.20,
-        right:0.20
+        right:0.05
     }
     let x = d3.scaleLinear()
     .domain([0, 100])
