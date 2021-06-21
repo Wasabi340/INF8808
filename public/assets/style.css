@@ -11,49 +11,61 @@
   "heat-maps algorithm algorithm"
   "heat-maps metric equation";
   overflow: hidden;
+  background-color: #E1D5E7;
 }
 
 .highlight-points {
   grid-area: highlight-points;
   border-style: solid;
-  border-color: black;
+  border-color: #88A3CD;
+  background-color: #DAE8FC;
+  margin-right: 10px;
 }
 
 .metric { 
   grid-area: metric;
   border-style: solid;
-  border-color: black;
+  border-color: #88A3CD;
+  background-color: #DAE8FC;
+  margin-bottom: 10px;
 }
 
 .equation { 
   grid-area: equation;
   border-style: solid;
-  border-color: black;
+  border-color: #88A3CD;
+  background-color: #DAE8FC;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .algorithm { 
   grid-area: algorithm;
   border-style: solid;
-  border-color: black;
+  border-color: #88A3CD;
+  background-color: #DAE8FC;
+  margin-right: 10px;
 }
 
 .menu { 
   grid-area: menu;
-  border-style: solid;
-  border-color: black;
+  background-color: white;
 }
 
 .line-graphs { 
   grid-area: line-graphs;
-  border-style: solid;
-  border-color: black;
   overflow: auto;
+  margin:10px;
+  margin-left: 0px;
+  direction: rtl;
 }
 
 .heat-maps { 
   grid-area: heat-maps;
   border-style: solid;
-  border-color: black;
+  border-color: #88A3CD;
+  background-color: #DAE8FC;
+  margin: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
   direction: rtl;
