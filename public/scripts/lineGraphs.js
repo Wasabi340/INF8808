@@ -28,15 +28,85 @@ export function build () {
     .attr('height', '100%')
     let g = d3.select('.line-graphs svg')
     
+    
     let maxWidth = g.node().getBoundingClientRect().width
-    let maxHeight = 100 // Height for a linegraph is limited to a given size and is not bound by the bounding rect (TODO Experiment to find sweet spot)
+    let maxHeight = g.node().getBoundingClientRect().height // Height for a linegraph is limited to a given size and is not bound by the bounding rect (TODO Experiment to find sweet spot)
     let margin = {
         top:0.05,
-        bottom:0,
+        bottom:0.03,
         left:0.20,
-        right:0.05
+        right:0.20
     }
+    let fakeData = getFakeData()
+
+    let graphScale = d3.scaleLinear()
+    .domain([0, fakeData.graphs.length])
+    .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight]);
+
+    let init = g.selectAll('g')
+    .data(fakeData.graphs)
+    .enter()
+    .append('g')
+    .attr('class','graph')
+
+    init.append('text')
+    .attr('class','name')
+    .text((d)=>d.name)
+
+    init.append('text')
+    .attr('class', 'metric')
+    .text((d)=>d.metric)
+
     let x = d3.scaleLinear()
+    .domain([0, 100])
+    .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth]);
+
+    let xAxis = init.append('g')
+    .attr("transform", "translate(0," + maxHeight + ")")
+    .call(d3.axisBottom(x));
+
+    let y = d3.scaleLinear()
+    .domain([100, 0])
+    .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight]);
+
+    let yAxis = init.append("g")
+    .attr("transform", "translate("+margin.left*maxWidth+",0)")
+    .call(d3.axisLeft(y));
+
+    init.append('defs').append('svg:clipPath')
+    .attr('id','clip')
+    .append('svg:rect')
+    .attr('width', maxWidth-margin.right*maxWidth - margin.left*maxWidth)
+    .attr('height', maxHeight - margin.top*maxHeight)
+    .attr("x", margin.left*maxWidth)
+    .attr("y", margin.top*maxHeight);
+
+    let groups = g.selectAll('g.graph');
+    groups.attr('transform',(d,i) => `translate(0 ,${graphScale(i)})`);
+
+    let names = groups.selectAll('text.name')
+    names.attr('x', maxWidth/2)
+    .attr('y', 0)
+    .attr('text-anchor', 'middle')
+
+    let metrics = groups.selectAll('text.metric')
+    metrics.attr('x', margin.left*maxWidth/2)
+    .attr('y', 10)
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+
+
+    init.selectAll('circle.point')
+    .data((d)=>d.points)
+    .enter()
+    .append('circle')
+    .attr('class','map')
+    .attr("cx", function (d) { return x(d[0]); } )
+    .attr("cy", function (d) { return y(d[1]); } )
+    .attr("r", 8)
+    .style("fill", "#440154ff" )
+    .style("opacity", 0.5)
+    /*let x = d3.scaleLinear()
     .domain([0, 100])
     .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth]);
     let xAxis = g.append("g")
@@ -47,9 +117,9 @@ export function build () {
     .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight]);
     let yAxis = g.append("g")
     .attr("transform", "translate("+margin.left*maxWidth+",0)")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y));*/
     
-    let brush = d3.brushX()
+    /*let brush = d3.brushX()
     .extent([[margin.left*maxWidth,margin.top*maxHeight],[maxWidth-margin.right*maxWidth,maxHeight-margin.bottom*maxHeight]])
     .on("end", updateChart);
     
@@ -74,7 +144,7 @@ export function build () {
     globalG = g;
     globalBrush = brush;
 
-    let fakeData = getFakeData()
+    
     g.selectAll("circle")
     .data(fakeData.graphs[0].points)
     .enter()
@@ -83,7 +153,7 @@ export function build () {
       .attr("cy", function (d) { return y(d[1]); } )
       .attr("r", 8)
       .style("fill", "#440154ff" )
-      .style("opacity", 0.5)
+      .style("opacity", 0.5)*/
     
 }
 let idleTimeout;
