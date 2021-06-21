@@ -25,7 +25,7 @@ export function build () {
     console.log('building linegraphs')
     d3.select('.line-graphs svg')
     .attr('width', '100%')
-    .attr('height', '100%')
+    .attr('height', '1700%')
     let g = d3.select('.line-graphs svg')
     
     
@@ -41,7 +41,7 @@ export function build () {
 
     let graphScale = d3.scaleLinear()
     .domain([0, fakeData.graphs.length])
-    .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight]);
+    .range([0, 7500]);
 
     let init = g.selectAll('g')
     .data(fakeData.graphs)
@@ -62,12 +62,12 @@ export function build () {
     .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth]);
 
     let xAxis = init.append('g')
-    .attr("transform", "translate(0," + maxHeight + ")")
+    .attr("transform", "translate(0," + 150 + ")")
     .call(d3.axisBottom(x));
 
     let y = d3.scaleLinear()
-    .domain([100, 0])
-    .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight]);
+    .domain([0, 100])
+    .range([150, 20]);
 
     let yAxis = init.append("g")
     .attr("transform", "translate("+margin.left*maxWidth+",0)")
@@ -86,12 +86,12 @@ export function build () {
 
     let names = groups.selectAll('text.name')
     names.attr('x', maxWidth/2)
-    .attr('y', 0)
+    .attr('y', 15)
     .attr('text-anchor', 'middle')
 
     let metrics = groups.selectAll('text.metric')
     metrics.attr('x', margin.left*maxWidth/2)
-    .attr('y', 10)
+    .attr('y', 75)
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'middle')
 
@@ -103,7 +103,7 @@ export function build () {
     .attr('class','map')
     .attr("cx", function (d) { return x(d[0]); } )
     .attr("cy", function (d) { return y(d[1]); } )
-    .attr("r", 8)
+    .attr("r", 3)
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
     /*let x = d3.scaleLinear()
