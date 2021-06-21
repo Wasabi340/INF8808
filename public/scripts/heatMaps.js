@@ -70,9 +70,11 @@ export function build () {
     
     init.append('rect')
     .attr('class', 'switch')
+    .attr('cursor', 'pointer')
     
     init.append('circle')
     .attr('class', 'toggle')
+    .attr('cursor', 'pointer')
     
     init.selectAll('rect.map')
     .data((d) => d.values)
