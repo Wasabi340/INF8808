@@ -1,11 +1,18 @@
 function getFakeData(){
     
     let data = {
-        points: []
+        graphs: []
     }
     
-    for(let i = 0; i < 100; i ++){
-        data.points[i] = [Math.random()*101,Math.random()*101]
+    for(let i = 0; i < 40; i ++){
+        data.graphs.push({
+            name:`Case ${i+1}`,
+            metric:Math.floor(Math.random() * 101),
+            points:[]
+        })
+        for(let j = 0; j < 100; j++){
+            data.graphs[i].points.push([Math.random()*101,Math.random()*101]);
+        }
     }
     
     return data
@@ -69,7 +76,7 @@ export function build () {
 
     let fakeData = getFakeData()
     g.selectAll("circle")
-    .data(fakeData.points)
+    .data(fakeData.graphs[0].points)
     .enter()
     .append("circle")
       .attr("cx", function (d) { return x(d[0]); } )
