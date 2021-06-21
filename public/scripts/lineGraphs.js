@@ -11,9 +11,7 @@ function getFakeData(){
     return data
 }
 let globalXAxis;
-let globalYAxis;
 let globalX;
-let globalY;
 let globalG;
 let globalBrush;
 export function build () {
@@ -44,7 +42,7 @@ export function build () {
     .attr("transform", "translate("+margin.left*maxWidth+",0)")
     .call(d3.axisLeft(y));
     
-    let brush = d3.brush()
+    let brush = d3.brushX()
     .extent([[margin.left*maxWidth,margin.top*maxHeight],[maxWidth-margin.right*maxWidth,maxHeight-margin.bottom*maxHeight]])
     .on("end", updateChart);
     
@@ -65,9 +63,7 @@ export function build () {
 
     //Set all global variable (temp solution for testing remove later)
     globalXAxis = xAxis;
-    globalYAxis = yAxis;
     globalX = x;
-    globalY = y;
     globalG = g;
     globalBrush = brush;
 
@@ -83,24 +79,19 @@ export function build () {
       .style("opacity", 0.5)
     
 }
-var idleTimeout;
+let idleTimeout;
 function idled() { idleTimeout = null; }
 function updateChart({selection}){
-    console.log(selection)
     if(!selection){
         if (!idleTimeout)
             return idleTimeout = setTimeout(idled, 350);
         globalX.domain([0,100]); //These are the same as the x,y variables in the build function
-        globalY.domain([100,0]);
     } else {
-        globalX.domain([ globalX.invert(selection[0][0]), globalX.invert(selection[1][0]) ]);
-        globalY.domain([ globalY.invert(selection[0][1]), globalY.invert(selection[1][1]) ]);
+        globalX.domain([ globalX.invert(selection[0]), globalX.invert(selection[1]) ]);
         globalG.select(".brush").call(globalBrush.move, null);
     }
     globalXAxis.transition().duration(1000).call(d3.axisBottom(globalX))
-    globalYAxis.transition().duration(1000).call(d3.axisLeft(globalY))
     globalG.selectAll("circle")
     .transition().duration(1000)
     .attr("cx", function (d) { return globalX(d[0]); } )
-    .attr("cy", function (d) { return globalY(d[1]); } )
 }
