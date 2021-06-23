@@ -1,3 +1,5 @@
+import { swapView } from "./lineGraphs"
+
 const colors = [
     {
         id:'globalGrad',
@@ -88,6 +90,7 @@ function handleMouseClick(data){
             document.getElementsByClassName('dashboard')[0].style.backgroundColor = (d.name == 'Global' ? '#E1D5E7' : '#D5E8D4')
             //d3.select('.dashboard').attr('background-color', d.name == 'Global' ? '#E1D5E7' : '#D5E8D4')
             console.log(`switching to ${d.name} view`)
+            swapView()
             d3.select(this.parentNode).selectAll('rect')
             .attr('fill', function(d,i) {
                 d.on = !d.on

@@ -160,6 +160,41 @@ export function build () {
       .style("opacity", 0.5)*/
     
 }
+/**
+ * Removes the graph specified by the given name from the viewable linegraphs
+ * Additionally removes said graph from the saved graph list
+ *
+ * @param {string} name The title of the graph (This title matches the one saved within the graph object located in the graphList)
+ */
+export function removeGraph(name){
+    console("Removing graph " + name)
+}
+/**
+ * Adds the graph specified by the given name to the viewable linegraphs
+ * Additionally adds said graph to the saved graph list
+ *
+ * @param {string} name The title of the graph (This title matches the one saved within the graph object located in the graphList)
+ */
+export function addGraph(name){
+    console.log("Adding graph " + name)
+}
+/**
+ * Swaps the view from global to case and vice versa.
+ * This has the effect of removing all graphs of one view and replacing them with the graphs of the new view
+ */
+export function swapView(){
+    isGlobalView = !isGlobalView
+    console.log(`Changing linegraphs to the ${isGlobalView ? 'global':'case'} view`)
+}
+/**
+ * Along with these three functions, these global variables are used
+ * @var {boolean} isGlobalView Is true when the current view is the global view (Otherwise, it is in the case view)
+ * @var {object[]} currentGlobalGraphList List of all graphs currently displayed on the global view
+ * @var {object[]} currentCaseGraphList List of all graphs currently displayed on the case view
+ */
+let isGlobalView = true;
+let currentGlobalGraphList = [];
+let currentCaseGraphList = [];
 let idleTimeout;
 function idled() { idleTimeout = null; }
 function updateChart({selection}){

@@ -1,6 +1,8 @@
 //let rgb = d3.select(this).attr('fill').match(/\d+/g);
 //return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2] < 60 ? 'white' : 'black'
 
+import { addGraph, removeGraph } from "./lineGraphs"
+
 function getFakeData(){
     
     let data = {
@@ -154,7 +156,13 @@ function handleMouseClick(g, left, right){
         d.on = !d.on
 
         console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
-
+        if (d.on){
+            console.log("Calling linegraph build function for " + d.name)
+            addGraph(d.name)
+        } else {
+            console.log("Calling linegraph remove function for " + d.name)
+            removeGraph(d.name)
+        }
         return result
     })
 }
