@@ -164,10 +164,18 @@ export function build () {
  * Removes the graph specified by the given name from the viewable linegraphs
  * Additionally removes said graph from the saved graph list
  *
- * @param {string} name The title of the graph (This title matches the one saved within the graph object located in the graphList)
+ * @param {string} title The title of the graph (This title matches the one saved within the graph object located in the graphList)
  */
-export function removeGraph(name){
-    console("Removing graph " + name)
+export function removeGraph(title){
+    console.log("Removing graph " + title)
+    let g = d3.select('.line-graphs svg')
+    //Finds the graph matching the given title and removes it from the array
+    if(isGlobalView){
+        currentGlobalGraphList = currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
+    }else {
+        currentCaseGraphList = currentCaseGraphList.splice(currentCaseGraphList.findIndex((graph) => graph.title.equals(title)),1)
+    }
+    redrawGraphs();
 }
 /**
  * Adds the graph specified by the given name to the viewable linegraphs
@@ -177,20 +185,31 @@ export function removeGraph(name){
  */
 export function addGraph(name){
     console.log("Adding graph " + name)
+    redrawGraphs();
 }
 /**
  * Swaps the view from global to case and vice versa.
  * This has the effect of removing all graphs of one view and replacing them with the graphs of the new view
  */
 export function swapView(){
+    let oldGraphs = (isGlobalView) ? currentGlobalGraphList : currentCaseGraphList;
+    //Hide all the graphs from the other view before swapping
+    oldGraphs.forEach( (graph) => {
+        graph.attr('display','none')
+    })
+    let newGraphs = (!isGlobalView) ? currentGlobalGraphList : currentCaseGraphList;
+    //Make sure that the CSS display property is set to display the new graphs
+    newGraphs.forEach( (graph) => {
+        graph.attr('display','inline')
+    })
     isGlobalView = !isGlobalView
     console.log(`Changing linegraphs to the ${isGlobalView ? 'global':'case'} view`)
 }
 /**
  * Along with these three functions, these global variables are used
  * @var {boolean} isGlobalView Is true when the current view is the global view (Otherwise, it is in the case view)
- * @var {object[]} currentGlobalGraphList List of all graphs currently displayed on the global view
- * @var {object[]} currentCaseGraphList List of all graphs currently displayed on the case view
+ * @var {object[]} currentGlobalGraphList List of all graphs currently displayed on the global view (Each entry consists of the graph object and its related brush)
+ * @var {object[]} currentCaseGraphList List of all graphs currently displayed on the case view (Each entry consists of the graph object and its related brush)
  */
 let isGlobalView = true;
 let currentGlobalGraphList = [];
@@ -210,4 +229,10 @@ function updateChart({selection}){
     globalG.selectAll("circle")
     .transition().duration(1000)
     .attr("cx", function (d) { return globalX(d[0]); } )
+}
+/**
+ * This function should be called when the window is resized or a graph is added/removed
+ */
+function redrawGraphs(){
+
 }
