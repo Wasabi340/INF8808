@@ -1,4 +1,4 @@
-import { swapView } from "./lineGraphs"
+import { swapView } from "./lineGraphs.js"
 
 const colors = [
     {

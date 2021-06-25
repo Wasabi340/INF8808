@@ -1,7 +1,7 @@
 //let rgb = d3.select(this).attr('fill').match(/\d+/g);
 //return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2] < 60 ? 'white' : 'black'
 
-import { addGraph, removeGraph } from "./lineGraphs"
+import { addGraph, removeGraph } from "./lineGraphs.js"
 
 function getFakeData(){
     
