@@ -171,9 +171,9 @@ export function removeGraph(title){
     let g = d3.select('.line-graphs svg')
     //Finds the graph matching the given title and removes it from the array
     if(isGlobalView){
-        currentGlobalGraphList = currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
+        currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
     }else {
-        currentCaseGraphList = currentCaseGraphList.splice(currentCaseGraphList.findIndex((graph) => graph.title.equals(title)),1)
+        currentCaseGraphList.splice(currentCaseGraphList.findIndex((graph) => graph.title.equals(title)),1)
     }
     redrawGraphs();
 }
