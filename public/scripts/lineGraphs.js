@@ -1,3 +1,5 @@
+import { isGlobal } from "./menu.js";
+
 function getFakeData(){
     
     let data = {
@@ -208,7 +210,7 @@ export function addGraph(name){
  * This has the effect of removing all graphs of one view and replacing them with the graphs of the new view
  */
 export function swapView(){
-    let oldGraphs = (isGlobalView) ? currentGlobalGraphList : currentCaseGraphList;
+    let oldGraphs = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
     //Hide all the graphs from the other view before swapping
     oldGraphs.forEach( (entry) => {
         entry.graph.attr('display','none')
@@ -219,7 +221,7 @@ export function swapView(){
         entry.graph.attr('display','inline')
     })
     isGlobalView = !isGlobalView
-    console.log(`Changing linegraphs to the ${isGlobalView ? 'global':'case'} view`)
+    console.log(`Changing linegraphs to the ${isGlobal ? 'global':'case'} view`)
 }
 /**
  * Global variable
@@ -286,5 +288,5 @@ function updateChart({selection}){
  * This function should be called when the window is resized or a graph is added/removed
  */
 function redrawGraphs(){
-
+    let graphsToRedraw = isGlobal
 }

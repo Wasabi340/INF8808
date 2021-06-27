@@ -10,7 +10,7 @@ const colors = [
         grad:['#D5E8D4','#A5C4A3']
     }
 ]
-let isGlobal = true;
+export let isGlobal = true;
 
 export function build () {
     console.log('building menu')
