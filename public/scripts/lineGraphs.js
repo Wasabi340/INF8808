@@ -184,7 +184,23 @@ export function removeGraph(title){
  * @param {string} name The title of the graph (This title matches the one saved within the graph object located in the graphList)
  */
 export function addGraph(name){
+    let graphMargins = {
+        top:0.05,
+        bottom:0.05,
+        right:0.2,
+        left:0.2,
+    }
     console.log("Adding graph " + name)
+    //TODO Add call to grab data for graph
+    let gridWidth = g.parentNode.getBoundingClientRect().width
+    let gridHeight = g.parentNode.getBoundingClientRect().height
+
+    let xExtremums = [0,100] //This value changes based on the given data of the graph
+    let yExtremums = [0,100] //This value changes based on the given data of the graph
+
+    let xScale = d3.scaleLinear()
+    .domain(xExtremums)
+    .range([graphMargins.left*gridWidth,])
     redrawGraphs();
 }
 /**
@@ -194,25 +210,61 @@ export function addGraph(name){
 export function swapView(){
     let oldGraphs = (isGlobalView) ? currentGlobalGraphList : currentCaseGraphList;
     //Hide all the graphs from the other view before swapping
-    oldGraphs.forEach( (graph) => {
-        graph.attr('display','none')
+    oldGraphs.forEach( (entry) => {
+        entry.graph.attr('display','none')
     })
     let newGraphs = (!isGlobalView) ? currentGlobalGraphList : currentCaseGraphList;
     //Make sure that the CSS display property is set to display the new graphs
-    newGraphs.forEach( (graph) => {
-        graph.attr('display','inline')
+    newGraphs.forEach( (entry) => {
+        entry.graph.attr('display','inline')
     })
     isGlobalView = !isGlobalView
     console.log(`Changing linegraphs to the ${isGlobalView ? 'global':'case'} view`)
 }
 /**
- * Along with these three functions, these global variables are used
+ * Global variable
  * @var {boolean} isGlobalView Is true when the current view is the global view (Otherwise, it is in the case view)
- * @var {object[]} currentGlobalGraphList List of all graphs currently displayed on the global view (Each entry consists of the graph object and its related brush)
- * @var {object[]} currentCaseGraphList List of all graphs currently displayed on the case view (Each entry consists of the graph object and its related brush)
  */
 let isGlobalView = true;
+/**
+ * Global variable
+ * @var {boolean} currentGlobalGraphList List of all current graphs on the global view. The structure used is the following:
+ * 
+ * entry:{
+ * 
+ * graph: Object representing the HTML graph element (its encompassing g element)
+ * 
+ * xExtremums: Interval giving min/max of the X values of the graph
+ * 
+ * xAxis: The xAxis object of the graph
+ * 
+ * xScale: The xScale object of the graph
+ * 
+ * yExtremums: Interval giving min/max of the X values of the graph
+ * 
+ * brush: Brush object associated with the graph
+ * }
+ */
 let currentGlobalGraphList = [];
+/**
+ * Global variable
+ * @var {boolean} currentCaseGraphList List of all current graphs on the case view. The structure used is the following:
+ * 
+ * entry:{
+ * 
+ * graph: Object representing the HTML graph element (its encompassing g element)
+ * 
+ * xExtremums: Interval giving min/max of the X values of the graph
+ * 
+ * xAxis: The xAxis object of the graph
+ * 
+ * xScale: The xScale object of the graph
+ * 
+ * yExtremums: Interval giving min/max of the X values of the graph
+ * 
+ * brush: Brush object associated with the graph
+ * }
+ */
 let currentCaseGraphList = [];
 let idleTimeout;
 function idled() { idleTimeout = null; }
