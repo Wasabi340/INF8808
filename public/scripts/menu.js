@@ -10,6 +10,7 @@ const colors = [
         grad:['#D5E8D4','#A5C4A3']
     }
 ]
+let isGlobal = true;
 
 export function build () {
     console.log('building menu')
@@ -87,6 +88,7 @@ function handleMouseClick(data){
     d3.select(this)
     .attr('fill', function(d){
         if(!d.on){
+            isGlobal = (d.name == 'Global');
             document.getElementsByClassName('dashboard')[0].style.backgroundColor = (d.name == 'Global' ? '#E1D5E7' : '#D5E8D4')
             //d3.select('.dashboard').attr('background-color', d.name == 'Global' ? '#E1D5E7' : '#D5E8D4')
             console.log(`switching to ${d.name} view`)
