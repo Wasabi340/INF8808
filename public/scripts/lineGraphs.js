@@ -170,7 +170,7 @@ export function build () {
  */
 export function removeGraph(title){
     console.log("Removing graph " + title)
-    let g = d3.select('.line-graphs svg')
+    let graphToRemove = d3.select('.line-graphs svg').select(`[title=${title}]`).remove()
     //Finds the graph matching the given title and removes it from the array
     if(isGlobal){
         currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
@@ -183,16 +183,16 @@ export function removeGraph(title){
  * Adds the graph specified by the given name to the viewable linegraphs
  * Additionally adds said graph to the saved graph list
  *
- * @param {string} name The title of the graph (This title matches the one saved within the graph object located in the graphList)
+ * @param {string} title The title of the graph (This title matches the one saved within the graph object located in the graphList)
  */
-export function addGraph(name){
+export function addGraph(title){
     let graphMargins = {
         top:0.05,
         bottom:0.05,
         right:0.2,
         left:0.2,
     }
-    console.log("Adding graph " + name)
+    console.log("Adding graph " + title)
     //TODO Add call to grab data for graph
     let gridWidth = g.parentNode.getBoundingClientRect().width
     let gridHeight = g.parentNode.getBoundingClientRect().height
@@ -268,6 +268,8 @@ let currentGlobalGraphList = [];
  * }
  */
 let currentCaseGraphList = [];
+let lastGlobalSelection;
+let lastCaseSelection;
 let idleTimeout;
 function idled() { idleTimeout = null; }
 function updateChart({selection}){
@@ -303,4 +305,5 @@ function redrawGraphs(){
         //We only need to make sure each entry
         entry.graph.attr('y',index*displacement);
     })
+    updateAllCharts((isGlobal) ? lastGlobalSelection : lastCaseSelection,graphsToRedraw);
 }
