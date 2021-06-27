@@ -172,7 +172,7 @@ export function removeGraph(title){
     console.log("Removing graph " + title)
     let g = d3.select('.line-graphs svg')
     //Finds the graph matching the given title and removes it from the array
-    if(isGlobalView){
+    if(isGlobal){
         currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
     }else {
         currentCaseGraphList.splice(currentCaseGraphList.findIndex((graph) => graph.title.equals(title)),1)
@@ -210,12 +210,12 @@ export function addGraph(name){
  * This has the effect of removing all graphs of one view and replacing them with the graphs of the new view
  */
 export function swapView(){
-    let oldGraphs = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
+    let oldGraphs = (!isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
     //Hide all the graphs from the other view before swapping
     oldGraphs.forEach( (entry) => {
         entry.graph.attr('display','none')
     })
-    let newGraphs = (!isGlobalView) ? currentGlobalGraphList : currentCaseGraphList;
+    let newGraphs = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
     //Make sure that the CSS display property is set to display the new graphs
     newGraphs.forEach( (entry) => {
         entry.graph.attr('display','inline')
@@ -271,22 +271,36 @@ let currentCaseGraphList = [];
 let idleTimeout;
 function idled() { idleTimeout = null; }
 function updateChart({selection}){
+    updateAllCharts(selection, (isGlobal) ? currentGlobalGraphList : currentCaseGraphList)
+}
+function updateAllCharts(selection,graphList){
     if(!selection){
-        if (!idleTimeout)
+        if(!idleTimeout)
             return idleTimeout = setTimeout(idled, 350);
-        globalX.domain([0,100]); //These are the same as the x,y variables in the build function
+        graphList.forEach( (entry) => {
+            entry.xScale.domain([0,100]) //Set this domain to min/max of the dataset used
+        })
     } else {
-        globalX.domain([ globalX.invert(selection[0]), globalX.invert(selection[1]) ]);
-        globalG.select(".brush").call(globalBrush.move, null);
+        graphList.forEach( (entry) => {
+            entry.xScale.domain([ entry.xScale.invert(selection[0]), entry.xScale.invert(selection[1]) ]);
+            entry.graph.select('.brush').call(entry.brush.move, null);
+        })
+        graphList.forEach( (entry) => {
+            entry.XAxis.transition().duration(1000)
+            .call(d3.axisBottom(entry.xScale))
+            entry.graph.selectAll('circle').transition().duration(1000)
+            .attr('cx',function (d) {return entry.xScale(d[0])})
+        })
     }
-    globalXAxis.transition().duration(1000).call(d3.axisBottom(globalX))
-    globalG.selectAll("circle")
-    .transition().duration(1000)
-    .attr("cx", function (d) { return globalX(d[0]); } )
 }
 /**
- * This function should be called when the window is resized or a graph is added/removed
+ * This function should be called when a graph is added/removed
  */
 function redrawGraphs(){
-    let graphsToRedraw = isGlobal
+    let graphsToRedraw = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
+    const displacement = 50; //Change this value to how far the graphs should be spaced
+    graphsToRedraw.forEach((entry,index) => {
+        //We only need to make sure each entry
+        entry.graph.attr('y',index*displacement);
+    })
 }
