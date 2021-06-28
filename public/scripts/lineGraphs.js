@@ -168,10 +168,15 @@ function redrawGraphs(){
  * @param {string} type The type of point to highlight
  * @param {boolean} isHighlight Whether to highlight a point or remove highlight from a point
  */
-export function highlightPoints(type, isHighlight){
+export function highlightPoints(type){
+    
     d3.select('.line-graphs svg')
     .selectAll('circle')
-    .attr("fill",(isHighlight) ?  : "#440154ff")
+    .attr('fill', "#440154ff")
+    
+    d3.select('.line-graphs svg')
+    .selectAll(`circle.${type}`)
+    .attr("fill","#db0000ff")
 }
 /**
  * This function is used when all graphs must be removed from the grid such as when switching to a different case 
