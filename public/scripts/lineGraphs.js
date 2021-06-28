@@ -171,3 +171,13 @@ function redrawGraphs(){
 export function highlightPoints(type, isHighlight){
 
 }
+/**
+ * This function is used when all graphs must be removed from the grid such as when switching to a different case 
+ */
+export function deleteAllCurrentGraphs(){
+    if (isGlobal)
+        currentGlobalGraphList = []
+    else
+        currentCaseGraphList = []
+    d3.select('.line-graphs svg').selectAll('.'+(isGlobal) ? 'case' : 'dimension').remove()
+}
