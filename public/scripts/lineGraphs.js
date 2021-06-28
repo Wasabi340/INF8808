@@ -171,17 +171,15 @@ export function build () {
  */
 export function removeGraph(title){
 
-    /*
-    console.log("Removing graph " + title)
-    let graphToRemove = d3.select('.line-graphs svg').select(`.${title} svg`).remove()
+    let graphToRemove = d3.select('.line-graphs svg').select("#"+title.replace(" ","_")).remove()
     //Finds the graph matching the given title and removes it from the array
     if(isGlobal){
-        currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
+        currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((entry) => entry.title == title),1)
     }else {
-        currentCaseGraphList.splice(currentCaseGraphList.findIndex((graph) => graph.title.equals(title)),1)
+        currentCaseGraphList.splice(currentCaseGraphList.findIndex((entry) => entry.title == title),1)
     }
     redrawGraphs();
-    */
+    
 }
 /**
  * Adds the graph specified by the given name to the viewable linegraphs
@@ -193,17 +191,16 @@ export function removeGraph(title){
 export function addGraph(title,data){
     let graphMargins = {
         top:0.05,
-        bottom:0.05,
+        bottom:0.03,
         right:0.2,
         left:0.2,
     }
     //TODO Query the data required for this entry before this 
     let fakeData = getFakeData().graphs[0];
-    console.log("Adding graph " + title)
     let g = d3.select('.line-graphs svg')
     let graph = g.append('g')
     .attr('class','graph')
-    .attr('id',title)
+    .attr('id',title.replace(" ","_"))
 
     graph.append('text')
     .attr('class','name')
@@ -234,11 +231,14 @@ export function addGraph(title,data){
     .attr('id','clip')
     .append('svg:rect')
     .attr('width', gridWidth-graphMargins.right*gridWidth - graphMargins.left*gridWidth)
-    .attr('height', gridHeight - graphMargins.top*gridHeight)
+    .attr('height', 130)
     .attr("x", graphMargins.left*gridWidth)
-    .attr("y", graphMargins.top*gridHeight);
+    .attr("y", 20);
 
-    graph.selectAll('circle')
+    let scatter = graph.append('g')
+    .attr("clip-path", "url(#clip)");
+
+    scatter.selectAll('circle')
     .data(fakeData.points) //Select the data points of the given graph
     .enter()
     .append('circle')
@@ -249,19 +249,15 @@ export function addGraph(title,data){
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
 
-
-    let scatter = graph.append('g')
-    .attr("clip-path", "url(#clip)");
-
     let brush = d3.brushX()
-    .extent([[graphMargins.left*gridWidth,graphMargins.top*gridHeight],[gridWidth-graphMargins.right*gridWidth,gridHeight-graphMargins.bottom*gridHeight]])
+    .extent([[graphMargins.left*gridWidth,20],[gridWidth-graphMargins.right*gridWidth,150]])
     .on("end", updateChart);
+
+    //.extent([[margin.left*maxWidth,margin.top*maxHeight],[maxWidth-margin.right*maxWidth,maxHeight-margin.bottom*maxHeight]])
 
     scatter.append('g')
     .attr("class", "brush")
     .call(brush);
-
-    //TODO Add Metric and Title to graph
 
     graph.select('text.name')
     .attr('x', gridWidth/2)
@@ -281,7 +277,8 @@ export function addGraph(title,data){
         xExtremums:xExtremums,
         xAxis:xAxis,
         xScale:xScale,
-        brush:brush
+        brush:brush,
+        title:title
     })
     redrawGraphs();
 }
