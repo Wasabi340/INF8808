@@ -169,8 +169,10 @@ export function build () {
  * @param {string} title The title of the graph (This title matches the one saved within the graph object located in the graphList)
  */
 export function removeGraph(title){
+
+    /*
     console.log("Removing graph " + title)
-    let graphToRemove = d3.select('.line-graphs svg').select(`[title=${title}]`).remove()
+    let graphToRemove = d3.select('.line-graphs svg').select(`.${title} svg`).remove()
     //Finds the graph matching the given title and removes it from the array
     if(isGlobal){
         currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((graph) => graph.title.equals(title)),1)
@@ -178,6 +180,7 @@ export function removeGraph(title){
         currentCaseGraphList.splice(currentCaseGraphList.findIndex((graph) => graph.title.equals(title)),1)
     }
     redrawGraphs();
+    */
 }
 /**
  * Adds the graph specified by the given name to the viewable linegraphs
@@ -194,6 +197,7 @@ export function addGraph(title){
     }
     console.log("Adding graph " + title)
     //TODO Add call to grab data for graph
+    /*
     let gridWidth = g.parentNode.getBoundingClientRect().width
     let gridHeight = g.parentNode.getBoundingClientRect().height
 
@@ -204,6 +208,7 @@ export function addGraph(title){
     .domain(xExtremums)
     .range([graphMargins.left*gridWidth,])
     redrawGraphs();
+    */
 }
 /**
  * Swaps the view from global to case and vice versa.
