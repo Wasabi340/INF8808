@@ -174,9 +174,13 @@ export function removeGraph(title){
     let graphToRemove = d3.select('.line-graphs svg').select("#"+title.replace(" ","_")).remove()
     //Finds the graph matching the given title and removes it from the array
     if(isGlobal){
-        currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((entry) => entry.title == title),1)
+        let index = currentGlobalGraphList.findIndex((entry) => entry.title == title);
+        if(index >= 0)
+            currentGlobalGraphList.splice(currentGlobalGraphList.findIndex((entry) => entry.title == title),1)
     }else {
-        currentCaseGraphList.splice(currentCaseGraphList.findIndex((entry) => entry.title == title),1)
+        let index = currentCaseGraphList.findIndex((entry) => entry.title == title)
+        if(index >= 0)
+            currentCaseGraphList.splice(currentCaseGraphList.findIndex((entry) => entry.title == title),1)
     }
     redrawGraphs();
     
