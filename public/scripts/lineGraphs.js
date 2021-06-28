@@ -81,11 +81,11 @@ export function addGraph(title,data){
         graph.append('text')
         .attr('class', (isGlobal) ? 'case' : 'dimension')
         .attr('id','metric')
-        .text(fakeData.metric)
+        .text(data.metric)
 
     let gridWidth = g.node().getBoundingClientRect().width
-    let xExtremums = [0,100] //This value changes based on the given data of the graph
-    let yExtremums = [0,100] //This value changes based on the given data of the graph
+    let xExtremums = [0,2000] //This value changes based on the given data of the graph
+    let yExtremums = [d3.extent(data.loss_mae)] //This value changes based on the given data of the graph
     let xScale = d3.scaleLinear()
     .domain(xExtremums)
     .range([graphMargins.left*gridWidth,gridWidth-graphMargins.right*gridWidth])
@@ -100,12 +100,12 @@ export function addGraph(title,data){
     .call(d3.axisLeft(yScale));
 
     graph.selectAll('circle')
-    .data(fakeData.points) //Select the data points of the given graph
+    .data(data) //Select the data points of the given graph
     .enter()
     .append('circle')
-    .attr('class','map')
-    .attr("cx", function (d) { return xScale(d[0]); } )
-    .attr("cy", function (d) { return yScale(d[1]); } )
+    .attr('class',function (d,i) {return d.pointType[i]})
+    .attr("cx", function (d,i) { return xScale(i); } )
+    .attr("cy", function (d,i) { return yScale(d.value[i]); } )
     .attr("r", 3)
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
@@ -169,7 +169,9 @@ function redrawGraphs(){
  * @param {boolean} isHighlight Whether to highlight a point or remove highlight from a point
  */
 export function highlightPoints(type, isHighlight){
-
+    d3.select('.line-graphs svg')
+    .selectAll('circle')
+    .attr("fill",(isHighlight) ?  : "#440154ff")
 }
 /**
  * This function is used when all graphs must be removed from the grid such as when switching to a different case 
