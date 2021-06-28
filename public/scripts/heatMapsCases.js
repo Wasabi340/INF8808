@@ -8,6 +8,8 @@ function getFakeData(){
     let data = {
         studyCases: []
     }
+
+    //console.log(d3.select('.algorithm svg').select('text').property('name'))
     
     for(let i = 0; i < 40; i++){
         
@@ -25,7 +27,39 @@ function getFakeData(){
     return data
 }
 
-export function build (data) {
+function rearangeData(cases) {
+
+    let data = {
+        studyCases: []
+    }
+
+    let algo = "Algo1"
+    if (!d3.select('.algorithm svg').select('text').empty()) {
+        algo = d3.select('.algorithm svg').select('text').property('value')
+    }
+    
+    let index = 0
+    cases.forEach((case_study) => {
+        let metric = (algo=="Algo1") ? case_study[0].Algo1_adaptiveMetric : case_study[0].Algo1_adaptiveMetric
+        data.studyCases.push({
+            name:`Case ${index+1}`,
+            metric: metric, 
+            values:[]
+        })
+
+        case_study.forEach((point) => {
+            let pointValue = (algo=="Algo1") ? point.Algo1_loss_mae : case_study[0].point.Algo2_loss_mae
+            let pointType = (algo=="Algo1") ? point.Algo1_pointType : case_study[0].point.Algo2_pointType
+            data.studyCases[index].values.push({value: pointValue, type: pointType})
+        })
+        index = index+1
+    })
+
+    return data
+}
+
+
+export function build (cases) {
     console.log('building heatmaps')
 
     d3.select('.heat-maps svg')
@@ -34,7 +68,7 @@ export function build (data) {
     
     let g = d3.select('.heat-maps svg')
     
-    let fakeData = getFakeData()
+    let fakeData = rearangeData(cases)
     
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
@@ -54,7 +88,7 @@ export function build (data) {
     .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth])
     
     let colorScale = d3.scaleLinear()
-    .domain([0, 0.33, 0.66, 1])
+    .domain([0, 6.66, 13.33, 20])
     .range(['blue', 'green', 'yellow', 'red'])
 
     let init = g.selectAll('g.case')
@@ -130,7 +164,7 @@ export function build (data) {
     rects.attr('width', maxWidth*(1-margin.left-margin.right)/24)
     .attr('height', 20)
     .attr('x', (d, i) => horizontalScale(i))
-    .attr('fill', (d) => colorScale(d))
+    .attr('fill', (d) => colorScale(d.value))
 }
 
 function handleMouseOver(){
