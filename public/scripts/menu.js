@@ -98,8 +98,17 @@ function handleMouseClick(data){
                 d.on = !d.on
                 return `url(#${colors[i].id})`
             })
+
+            let visible = isGlobal ? 'case' : 'dimension'
+            let hidden = isGlobal ? 'dimension' : 'case'
+
+            d3.selectAll(`.${visible}`).style('display', 'block')
+            d3.selectAll(`.${hidden}`).style('display', 'none')
+
             
         }
         return colors[d.name == 'Global' ? 0 : 1].grad[0]
     })
+
+
 }

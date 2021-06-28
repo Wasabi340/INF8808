@@ -57,10 +57,11 @@ export function build () {
     .domain([0, 0.33, 0.66, 1])
     .range(['blue', 'green', 'yellow', 'red'])
 
-    let init = g.selectAll('g')
+    let init = g.selectAll('g.case')
     .data(fakeData.studyCases)
     .enter()
     .append('g')
+    .attr('class', 'case')
     
     init.append('text')
     .attr('class', 'name')
@@ -86,7 +87,7 @@ export function build () {
     .on("mouseover", handleMouseOver)
     .on("mouseout", handleMouseOut);
     
-    let groups = g.selectAll('g')
+    let groups = g.selectAll('g.case')
     groups.attr('transform', (d, i) => `translate(0 ${verticalScale(i)})`)
     
     let names = groups.selectAll('text.name')
