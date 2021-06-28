@@ -61,7 +61,7 @@ import * as algorithm from './scripts/algorithm.js'
             lineGraphs.build()
             equation.build()
             metric.build()
-            algorithm.build()
+            algorithm.build(cases)
         }
 
         window.addEventListener('resize', () => {

@@ -15,7 +15,26 @@ function getFakeData(){
     return data
 }
 
-export function build (data) {
+function rearangeData(cases) {
+
+    let data = {
+        algorithms: []
+    }
+    
+    for(let i = 0; i < 2; i++){
+        
+        let metric = (i==0) ? cases[0][0].Algo1_aggregatedMetric : cases[0][0].Algo2_aggregatedMetric
+        data.algorithms.push({
+            name:`Algo${i + 1}`,
+            metric: metric,
+        })
+    }
+    
+    return data
+
+}
+
+export function build (cases) {
     console.log('building algorithm')
 
     d3.select('.algorithm svg')
@@ -28,7 +47,7 @@ export function build (data) {
     
     let g = d3.select('.algorithm svg')
 
-    let fakeData = getFakeData()
+    let fakeData = rearangeData(cases)
 
     let button = g.select('#button').node() ? g.select('#button') : g.append('rect')
     let text = g.select('#selected-algorithm').node() ? g.select('#selected-algorithm') : g.append('text')
