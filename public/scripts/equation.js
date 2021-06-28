@@ -1,5 +1,5 @@
 export function build () {
-    console.log('building algorithm')
+    console.log('building equation')
 
     d3.select('.equation svg')
     .attr('width', '100%')
