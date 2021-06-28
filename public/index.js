@@ -7,22 +7,21 @@ import * as metric from './scripts/metric.js'
 import * as algorithm from './scripts/algorithm.js'
 
 
-function build(){
-    menu.build()
-    heatMapsCases.build()
-    heatMapsDimensions.build()
-    lineGraphs.build()
-    equation.build()
-    metric.build()
-    algorithm.build()
-    
-    d3.csv("../assets/data/test.csv").then(function(data) {
-        console.log(data[0]);
-      });
-    
+function build(data){
+    menu.build(data)
+    heatMapsCases.build(data)
+    heatMapsDimensions.build(data)
+    lineGraphs.build(data)
+    equation.build(data)
+    metric.build(data)
+    algorithm.build(data)   
 }
-build()
 
-window.addEventListener('resize', () => {
-    build()
-})
+d3.csv("../assets/data/test.csv").then(function(data) {
+    console.log(data[0]);
+    build(data)
+
+    window.addEventListener('resize', () => {
+        build(data)
+    })
+});

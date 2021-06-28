@@ -1,4 +1,4 @@
-export function build () {
+export function build (data) {
     console.log('building equation')
 
     d3.select('.equation svg')

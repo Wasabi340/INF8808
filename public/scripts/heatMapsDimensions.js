@@ -25,7 +25,7 @@ function getFakeData(){
     return data
 }
 
-export function build () {
+export function build (data) {
     console.log('building heatmaps')
 
     d3.select('.heat-maps svg')

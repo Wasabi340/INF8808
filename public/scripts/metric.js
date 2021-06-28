@@ -1,4 +1,4 @@
-export function build () {
+export function build (data) {
     console.log('building metric')
     
     d3.select('.metric svg')

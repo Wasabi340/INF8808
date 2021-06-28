@@ -15,7 +15,7 @@ function getFakeData(){
     return data
 }
 
-export function build () {
+export function build (data) {
     console.log('building algorithm')
 
     d3.select('.algorithm svg')
