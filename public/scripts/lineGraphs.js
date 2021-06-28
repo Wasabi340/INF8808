@@ -171,10 +171,12 @@ function redrawGraphs(){
 export function highlightPoints(type){
     
     d3.select('.line-graphs svg')
+    .selectAll((isGlobal) ? '.case' : '.dimension')
     .selectAll('circle')
     .attr('fill', "#440154ff")
     
     d3.select('.line-graphs svg')
+    .selectAll((isGlobal) ? '.case' : '.dimension')
     .selectAll(`circle.${type}`)
     .attr("fill","#db0000ff")
 }
