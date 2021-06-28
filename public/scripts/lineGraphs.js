@@ -36,7 +36,7 @@ export function build () {
     let g = d3.select('.line-graphs svg')
     
     
-    let maxWidth = g.node().getBoundingClientRect().width
+    /*let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height // Height for a linegraph is limited to a given size and is not bound by the bounding rect (TODO Experiment to find sweet spot)
     let margin = {
         top:0.05,
@@ -188,8 +188,9 @@ export function removeGraph(title){
  * Additionally adds said graph to the saved graph list
  *
  * @param {string} title The title of the graph (This title matches the one saved within the graph object located in the graphList)
+ * @param {any[]} data The data representing the graph to be drawn
  */
-export function addGraph(title){
+export function addGraph(title,data){
     let graphMargins = {
         top:0.05,
         bottom:0.05,
@@ -197,11 +198,21 @@ export function addGraph(title){
         left:0.2,
     }
     //TODO Query the data required for this entry before this 
+    let fakeData = getFakeData().graphs[0];
     console.log("Adding graph " + title)
     let g = d3.select('.line-graphs svg')
     let graph = g.append('g')
     .attr('class','graph')
     .attr('id',title)
+
+    graph.append('text')
+    .attr('class','name')
+    .text(title)
+
+    graph.append('text')
+    .attr('class', 'metric')
+    .text(fakeData.metric)
+
     let gridWidth = g.node().getBoundingClientRect().width
     let gridHeight = g.node().getBoundingClientRect().height
     let xExtremums = [0,100] //This value changes based on the given data of the graph
@@ -227,8 +238,8 @@ export function addGraph(title){
     .attr("x", graphMargins.left*gridWidth)
     .attr("y", graphMargins.top*gridHeight);
 
-    graph.selectAll('circle.point')
-    .data((d)=>d.points) //Select the data points of the given graph
+    graph.selectAll('circle')
+    .data(fakeData.points) //Select the data points of the given graph
     .enter()
     .append('circle')
     .attr('class','map')
@@ -237,6 +248,7 @@ export function addGraph(title){
     .attr("r", 3)
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
+
 
     let scatter = graph.append('g')
     .attr("clip-path", "url(#clip)");
@@ -250,6 +262,17 @@ export function addGraph(title){
     .call(brush);
 
     //TODO Add Metric and Title to graph
+
+    graph.select('text.name')
+    .attr('x', gridWidth/2)
+    .attr('y', 15)
+    .attr('text-anchor', 'middle')
+
+    graph.select('text.metric')
+    .attr('x', graphMargins.left*gridWidth/2)
+    .attr('y', 75)
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
     
 
     let graphList = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
@@ -353,10 +376,17 @@ function updateAllCharts(selection,graphList){
  */
 function redrawGraphs(){
     let graphsToRedraw = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
-    const displacement = 50; //Change this value to how far the graphs should be spaced
     graphsToRedraw.forEach((entry,index) => {
         //We only need to make sure each entry
-        entry.graph.attr('transform',`translate (0, ${graphScale(index)}`);
+        entry.graph.attr('transform',`translate (0, ${graphScale(index)})`);
     })
     updateAllCharts((isGlobal) ? lastGlobalSelection : lastCaseSelection,graphsToRedraw);
+}
+/**
+ * 
+ * @param {string} type The type of point to highlight
+ * @param {boolean} isHighlight Whether to highlight a point or remove highlight from a point
+ */
+export function highlightPoints(type, isHighlight){
+
 }
