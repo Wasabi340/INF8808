@@ -69,16 +69,18 @@ export function addGraph(title,data){
     let fakeData = getFakeData().graphs[0];
     let g = d3.select('.line-graphs svg')
     let graph = g.append('g')
-    .attr('class','graph')
+    .attr('class',(isGlobal) ? 'case' : 'dimension')
     .attr('id',title.replace(" ","_"))
 
     graph.append('text')
-    .attr('class','name')
+    .attr('class',(isGlobal) ? 'case' : 'dimension')
+    .attr('id','name')
     .text(title)
 
     if(isGlobal)
         graph.append('text')
-        .attr('class', 'metric')
+        .attr('class', (isGlobal) ? 'case' : 'dimension')
+        .attr('id','metric')
         .text(fakeData.metric)
 
     let gridWidth = g.node().getBoundingClientRect().width
@@ -108,12 +110,12 @@ export function addGraph(title,data){
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
 
-    graph.select('text.name')
+    graph.select('#name')
     .attr('x', gridWidth/2)
     .attr('y', 15)
     .attr('text-anchor', 'middle')
 
-    graph.select('text.metric')
+    graph.select('#metric')
     .attr('x', graphMargins.left*gridWidth/2)
     .attr('y', 75)
     .attr('text-anchor', 'middle')
@@ -125,22 +127,6 @@ export function addGraph(title,data){
         title:title
     })
     redrawGraphs();
-}
-/**
- * Swaps the view from global to case and vice versa.
- * This has the effect of removing all graphs of one view and replacing them with the graphs of the new view
- */
-export function swapView(){
-    let oldGraphs = (!isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
-    //Hide all the graphs from the other view before swapping
-    oldGraphs.forEach( (entry) => {
-        entry.graph.attr('display','none')
-    })
-    let newGraphs = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
-    //Make sure that the CSS display property is set to display the new graphs
-    newGraphs.forEach( (entry) => {
-        entry.graph.attr('display','inline')
-    })
 }
 /**
  * Global variable
