@@ -15,8 +15,12 @@ function build(){
     equation.build()
     metric.build()
     algorithm.build()
+    
+    d3.csv("../assets/data/test.csv").then(function(data) {
+        console.log(data[0]);
+      });
+    
 }
-
 build()
 
 window.addEventListener('resize', () => {
