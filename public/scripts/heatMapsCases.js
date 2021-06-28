@@ -199,9 +199,10 @@ function handleMouseClick(g, left, right){
                 //pointType (string[]): Represented in the "Algo_XpointType" column
                 //metric (number): Value is repeated over the array, but we only need a single value
                 values:null,
-                pointType:null
+                pointType:null,
+                metric:null
             }
-            addGraph(d.name)
+            addGraph(d.name,data)
         } else {
             console.log("Calling linegraph remove function for " + d.name)
             removeGraph(d.name)
