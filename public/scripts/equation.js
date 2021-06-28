@@ -38,7 +38,7 @@ export function build () {
     .attr('fill-opacity', 0)
     .attr('id', 'highlight')
 
-    g.selectAll('rect .button')
+    g.selectAll('rect.button')
     .data(terms)
     .enter()
     .append('rect')
@@ -52,7 +52,7 @@ export function build () {
     .attr('id', (d) => `button${d.id}`)
     .attr('class', 'button')
 
-    g.selectAll('text .term')
+    g.selectAll('text.term')
     .data(terms)
     .enter()
     .append('text')
