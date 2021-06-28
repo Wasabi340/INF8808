@@ -24,7 +24,7 @@ const graphScale = d3.scaleLinear()
 .domain([0, 40])
 .range(windowHeight);
 
-export function build () {
+export function build (data) {
     console.log('building linegraphs')
     d3.select('.line-graphs svg')
     .attr('width', '100%')
