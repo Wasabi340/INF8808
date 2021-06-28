@@ -150,13 +150,7 @@ export function swapView(){
  * 
  * graph: Object representing the HTML graph element (its encompassing g element)
  * 
- * xExtremums: Interval giving min/max of the X values of the graph
- * 
- * xAxis: The xAxis object of the graph
- * 
- * xScale: The xScale object of the graph
- * 
- * brush: Brush object associated with the graph
+ * title: The graph's title
  * }
  */
 let currentGlobalGraphList = [];
@@ -168,13 +162,7 @@ let currentGlobalGraphList = [];
  * 
  * graph: Object representing the HTML graph element (its encompassing g element)
  * 
- * xExtremums: Interval giving min/max of the X values of the graph
- * 
- * xAxis: The xAxis object of the graph
- * 
- * xScale: The xScale object of the graph
- * 
- * brush: Brush object associated with the graph
+ * title: The graph's title
  * }
  */
 let currentCaseGraphList = [];
