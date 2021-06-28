@@ -57,7 +57,8 @@ import * as algorithm from './scripts/algorithm.js'
 
         function build(){
             menu.build()
-            heatMaps.build()
+            heatMapsCases.build()
+            heatMapsDimensions.build()
             lineGraphs.build()
             equation.build()
             metric.build()
