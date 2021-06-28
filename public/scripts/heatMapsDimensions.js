@@ -140,7 +140,7 @@ export function build () {
     .attr('value', (d, i) => i+1)
 
     d3.select('select.dimension')
-    .on('change', function() { console.log(eval(d3.select(this).property('value')))})
+    .on('change', function() {turnAllOff(left); console.log(eval(d3.select(this).property('value')))})
 
     d3.selectAll('.dimension').style('display', 'none')
 }
@@ -178,4 +178,20 @@ function handleMouseClick(g, left, right){
         }
         return result
     })
+}
+
+function turnAllOff(left){
+
+    console.log("Calling linegraph remove function for all")
+
+    d3.selectAll('.dimension .toggle')
+    .transition()
+    .duration(100)
+    .attr('cx', (d) => {
+        d.on = false
+        return left
+    })
+
+    d3.selectAll('.dimension .switch')
+    .attr('fill', 'silver')
 }
