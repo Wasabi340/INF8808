@@ -25,143 +25,10 @@ const graphScale = d3.scaleLinear()
 .range(windowHeight);
 
 export function build () {
-    //TODO these two variables are arbitrary to set the graphs to their proper size, find a way to set it 
-    //Using maxHeight and other variables
-    let windowHeight = [0,7500];
-    let yAxisHeight = [150,20]
     console.log('building linegraphs')
     d3.select('.line-graphs svg')
     .attr('width', '100%')
     .attr('height', '1700%')
-    let g = d3.select('.line-graphs svg')
-    
-    
-    /*let maxWidth = g.node().getBoundingClientRect().width
-    let maxHeight = g.node().getBoundingClientRect().height // Height for a linegraph is limited to a given size and is not bound by the bounding rect (TODO Experiment to find sweet spot)
-    let margin = {
-        top:0.05,
-        bottom:0.03,
-        left:0.20,
-        right:0.20
-    }
-    let fakeData = getFakeData()
-
-    let graphScale = d3.scaleLinear()
-    .domain([0, fakeData.graphs.length])
-    .range(windowHeight);
-
-    let init = g.selectAll('g')
-    .data(fakeData.graphs)
-    .enter()
-    .append('g')
-    .attr('class','graph')
-
-    init.append('text')
-    .attr('class','name')
-    .text((d)=>d.name)
-
-    init.append('text')
-    .attr('class', 'metric')
-    .text((d)=>d.metric)
-
-    let x = d3.scaleLinear()
-    .domain([0, 100])
-    .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth]);
-
-    let xAxis = init.append('g')
-    .attr("transform", "translate(0," + 150 + ")")
-    .call(d3.axisBottom(x));
-
-    let y = d3.scaleLinear()
-    .domain([0, 100])
-    .range(yAxisHeight);
-
-    let yAxis = init.append("g")
-    .attr("transform", "translate("+margin.left*maxWidth+",0)")
-    .call(d3.axisLeft(y));
-
-    init.append('defs').append('svg:clipPath')
-    .attr('id','clip')
-    .append('svg:rect')
-    .attr('width', maxWidth-margin.right*maxWidth - margin.left*maxWidth)
-    .attr('height', maxHeight - margin.top*maxHeight)
-    .attr("x", margin.left*maxWidth)
-    .attr("y", margin.top*maxHeight);
-
-    let groups = g.selectAll('g.graph');
-    groups.attr('transform',(d,i) => `translate(0 ,${graphScale(i)})`);
-
-    let names = groups.selectAll('text.name')
-    names.attr('x', maxWidth/2)
-    .attr('y', 15)
-    .attr('text-anchor', 'middle')
-
-    let metrics = groups.selectAll('text.metric')
-    metrics.attr('x', margin.left*maxWidth/2)
-    .attr('y', 75)
-    .attr('text-anchor', 'middle')
-    .attr('dominant-baseline', 'middle')
-
-
-    init.selectAll('circle.point')
-    .data((d)=>d.points)
-    .enter()
-    .append('circle')
-    .attr('class','map')
-    .attr("cx", function (d) { return x(d[0]); } )
-    .attr("cy", function (d) { return y(d[1]); } )
-    .attr("r", 3)
-    .style("fill", "#440154ff" )
-    .style("opacity", 0.5)
-    /*let x = d3.scaleLinear()
-    .domain([0, 100])
-    .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth]);
-    let xAxis = g.append("g")
-    .attr("transform", "translate(0," + maxHeight + ")")
-    .call(d3.axisBottom(x));
-    let y = d3.scaleLinear()
-    .domain([100, 0])
-    .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight]);
-    let yAxis = g.append("g")
-    .attr("transform", "translate("+margin.left*maxWidth+",0)")
-    .call(d3.axisLeft(y));*/
-    
-    /*let brush = d3.brushX()
-    .extent([[margin.left*maxWidth,margin.top*maxHeight],[maxWidth-margin.right*maxWidth,maxHeight-margin.bottom*maxHeight]])
-    .on("end", updateChart);
-    /*
-    g.append('defs').append('svg:clipPath')
-    .attr('id','clip')
-    .append('svg:rect')
-    .attr('width', maxWidth-margin.right*maxWidth - margin.left*maxWidth)
-    .attr('height', maxHeight - margin.top*maxHeight)
-    .attr("x", margin.left*maxWidth)
-    .attr("y", margin.top*maxHeight)
-
-    g = g.append('g')
-    .attr("clip-path", "url(#clip)");
-
-    g.append('g')
-    .attr('class','brush')
-    .call(brush)
-
-    //Set all global variable (temp solution for testing remove later)
-    globalXAxis = xAxis;
-    globalX = x;
-    globalG = g;
-    globalBrush = brush;
-
-    
-    g.selectAll("circle")
-    .data(fakeData.graphs[0].points)
-    .enter()
-    .append("circle")
-      .attr("cx", function (d) { return x(d[0]); } )
-      .attr("cy", function (d) { return y(d[1]); } )
-      .attr("r", 8)
-      .style("fill", "#440154ff" )
-      .style("opacity", 0.5)*/
-    
 }
 /**
  * Removes the graph specified by the given name from the viewable linegraphs
@@ -199,7 +66,6 @@ export function addGraph(title,data){
         right:0.2,
         left:0.2,
     }
-    //TODO Query the data required for this entry before this 
     let fakeData = getFakeData().graphs[0];
     let g = d3.select('.line-graphs svg')
     let graph = g.append('g')
@@ -210,12 +76,12 @@ export function addGraph(title,data){
     .attr('class','name')
     .text(title)
 
-    graph.append('text')
-    .attr('class', 'metric')
-    .text(fakeData.metric)
+    if(isGlobal)
+        graph.append('text')
+        .attr('class', 'metric')
+        .text(fakeData.metric)
 
     let gridWidth = g.node().getBoundingClientRect().width
-    let gridHeight = g.node().getBoundingClientRect().height
     let xExtremums = [0,100] //This value changes based on the given data of the graph
     let yExtremums = [0,100] //This value changes based on the given data of the graph
     let xScale = d3.scaleLinear()
@@ -230,19 +96,8 @@ export function addGraph(title,data){
     let yAxis = graph.append("g")
     .attr("transform", "translate("+graphMargins.left*gridWidth+",0)")
     .call(d3.axisLeft(yScale));
-    
-    graph.append('defs').append('svg:clipPath')
-    .attr('id','clip')
-    .append('svg:rect')
-    .attr('width', gridWidth-graphMargins.right*gridWidth - graphMargins.left*gridWidth)
-    .attr('height', 130)
-    .attr("x", graphMargins.left*gridWidth)
-    .attr("y", 20);
 
-    let scatter = graph.append('g')
-    .attr("clip-path", "url(#clip)");
-
-    scatter.selectAll('circle')
+    graph.selectAll('circle')
     .data(fakeData.points) //Select the data points of the given graph
     .enter()
     .append('circle')
@@ -252,16 +107,6 @@ export function addGraph(title,data){
     .attr("r", 3)
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
-
-    let brush = d3.brushX()
-    .extent([[graphMargins.left*gridWidth,20],[gridWidth-graphMargins.right*gridWidth,150]])
-    .on("end", updateChart);
-
-    //.extent([[margin.left*maxWidth,margin.top*maxHeight],[maxWidth-margin.right*maxWidth,maxHeight-margin.bottom*maxHeight]])
-
-    scatter.append('g')
-    .attr("class", "brush")
-    .call(brush);
 
     graph.select('text.name')
     .attr('x', gridWidth/2)
@@ -273,15 +118,10 @@ export function addGraph(title,data){
     .attr('y', 75)
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'middle')
-    
 
     let graphList = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
     graphList.push({
         graph:graph,
-        xExtremums:xExtremums,
-        xAxis:xAxis,
-        xScale:xScale,
-        brush:brush,
         title:title
     })
     redrawGraphs();
@@ -301,14 +141,7 @@ export function swapView(){
     newGraphs.forEach( (entry) => {
         entry.graph.attr('display','inline')
     })
-    isGlobalView = !isGlobalView
-    console.log(`Changing linegraphs to the ${isGlobal ? 'global':'case'} view`)
 }
-/**
- * Global variable
- * @var {boolean} isGlobalView Is true when the current view is the global view (Otherwise, it is in the case view)
- */
-let isGlobalView = true;
 /**
  * Global variable
  * @var {boolean} currentGlobalGraphList List of all current graphs on the global view. The structure used is the following:
@@ -345,33 +178,7 @@ let currentGlobalGraphList = [];
  * }
  */
 let currentCaseGraphList = [];
-let lastGlobalSelection;
-let lastCaseSelection;
-let idleTimeout;
-function idled() { idleTimeout = null; }
-function updateChart({selection}){
-    updateAllCharts(selection, (isGlobal) ? currentGlobalGraphList : currentCaseGraphList)
-}
-function updateAllCharts(selection,graphList){
-    if(!selection){
-        if(!idleTimeout)
-            return idleTimeout = setTimeout(idled, 350);
-        graphList.forEach( (entry) => {
-            entry.xScale.domain(entry.xExtremums) //Set this domain to min/max of the dataset used
-        })
-    } else {
-        graphList.forEach( (entry) => {
-            entry.xScale.domain([ entry.xScale.invert(selection[0]), entry.xScale.invert(selection[1]) ]);
-            entry.graph.select('.brush').call(entry.brush.move, null);
-        })
-        graphList.forEach( (entry) => {
-            entry.XAxis.transition().duration(1000)
-            .call(d3.axisBottom(entry.xScale))
-            entry.graph.selectAll('circle').transition().duration(1000)
-            .attr('cx',function (d) {return entry.xScale(d[0])})
-        })
-    }
-}
+
 /**
  * This function should be called when a graph is added/removed
  */
@@ -381,7 +188,6 @@ function redrawGraphs(){
         //We only need to make sure each entry
         entry.graph.attr('transform',`translate (0, ${graphScale(index)})`);
     })
-    updateAllCharts((isGlobal) ? lastGlobalSelection : lastCaseSelection,graphsToRedraw);
 }
 /**
  * 
