@@ -102,16 +102,16 @@ body{
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: silver;
   margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 5px solid #88A3CD;
   width: 80%;
-  height: 60%;
+  height: 40%;
 }
 
 .close {
-  color: #aaa;
+  color: black;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -119,7 +119,7 @@ body{
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: white;
   text-decoration: none;
   cursor: pointer;
 }
