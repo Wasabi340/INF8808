@@ -19,10 +19,11 @@ function getFakeData(){
     
     return data
 }
-let globalXAxis;
-let globalX;
-let globalG;
-let globalBrush;
+const windowHeight = [0,7500];
+const graphScale = d3.scaleLinear()
+.domain([0, 40])
+.range(windowHeight);
+
 export function build () {
     //TODO these two variables are arbitrary to set the graphs to their proper size, find a way to set it 
     //Using maxHeight and other variables
@@ -195,20 +196,71 @@ export function addGraph(title){
         right:0.2,
         left:0.2,
     }
+    //TODO Query the data required for this entry before this 
     console.log("Adding graph " + title)
-    //TODO Add call to grab data for graph
-    /*
-    let gridWidth = g.parentNode.getBoundingClientRect().width
-    let gridHeight = g.parentNode.getBoundingClientRect().height
-
+    let g = d3.select('.line-graphs svg')
+    let graph = g.append('g')
+    .attr('class','graph')
+    .attr('id',title)
+    let gridWidth = g.node().getBoundingClientRect().width
+    let gridHeight = g.node().getBoundingClientRect().height
     let xExtremums = [0,100] //This value changes based on the given data of the graph
     let yExtremums = [0,100] //This value changes based on the given data of the graph
-
     let xScale = d3.scaleLinear()
     .domain(xExtremums)
-    .range([graphMargins.left*gridWidth,])
+    .range([graphMargins.left*gridWidth,gridWidth-graphMargins.right*gridWidth])
+    let yScale = d3.scaleLinear()
+    .domain(yExtremums)
+    .range([150,20]);
+    let xAxis = graph.append('g')
+    .attr("transform", "translate(0," + 150 + ")")
+    .call(d3.axisBottom(xScale));
+    let yAxis = graph.append("g")
+    .attr("transform", "translate("+graphMargins.left*gridWidth+",0)")
+    .call(d3.axisLeft(yScale));
+    
+    graph.append('defs').append('svg:clipPath')
+    .attr('id','clip')
+    .append('svg:rect')
+    .attr('width', gridWidth-graphMargins.right*gridWidth - graphMargins.left*gridWidth)
+    .attr('height', gridHeight - graphMargins.top*gridHeight)
+    .attr("x", graphMargins.left*gridWidth)
+    .attr("y", graphMargins.top*gridHeight);
+
+    graph.selectAll('circle.point')
+    .data((d)=>d.points) //Select the data points of the given graph
+    .enter()
+    .append('circle')
+    .attr('class','map')
+    .attr("cx", function (d) { return xScale(d[0]); } )
+    .attr("cy", function (d) { return yScale(d[1]); } )
+    .attr("r", 3)
+    .style("fill", "#440154ff" )
+    .style("opacity", 0.5)
+
+    let scatter = graph.append('g')
+    .attr("clip-path", "url(#clip)");
+
+    let brush = d3.brushX()
+    .extent([[graphMargins.left*gridWidth,graphMargins.top*gridHeight],[gridWidth-graphMargins.right*gridWidth,gridHeight-graphMargins.bottom*gridHeight]])
+    .on("end", updateChart);
+
+    scatter.append('g')
+    .attr("class", "brush")
+    .call(brush);
+
+    //TODO Add Metric and Title to graph
+    
+
+    let graphList = (isGlobal) ? currentGlobalGraphList : currentCaseGraphList;
+    graphList.push({
+        graph:graph,
+        xExtremums:xExtremums,
+        xAxis:xAxis,
+        xScale:xScale,
+        brush:brush
+    })
     redrawGraphs();
-    */
 }
 /**
  * Swaps the view from global to case and vice versa.
@@ -247,8 +299,6 @@ let isGlobalView = true;
  * 
  * xScale: The xScale object of the graph
  * 
- * yExtremums: Interval giving min/max of the X values of the graph
- * 
  * brush: Brush object associated with the graph
  * }
  */
@@ -267,8 +317,6 @@ let currentGlobalGraphList = [];
  * 
  * xScale: The xScale object of the graph
  * 
- * yExtremums: Interval giving min/max of the X values of the graph
- * 
  * brush: Brush object associated with the graph
  * }
  */
@@ -285,7 +333,7 @@ function updateAllCharts(selection,graphList){
         if(!idleTimeout)
             return idleTimeout = setTimeout(idled, 350);
         graphList.forEach( (entry) => {
-            entry.xScale.domain([0,100]) //Set this domain to min/max of the dataset used
+            entry.xScale.domain(entry.xExtremums) //Set this domain to min/max of the dataset used
         })
     } else {
         graphList.forEach( (entry) => {
@@ -308,7 +356,7 @@ function redrawGraphs(){
     const displacement = 50; //Change this value to how far the graphs should be spaced
     graphsToRedraw.forEach((entry,index) => {
         //We only need to make sure each entry
-        entry.graph.attr('y',index*displacement);
+        entry.graph.attr('transform',`translate (0, ${graphScale(index)}`);
     })
     updateAllCharts((isGlobal) ? lastGlobalSelection : lastCaseSelection,graphsToRedraw);
 }
