@@ -206,7 +206,7 @@ export function build (cases) {
     .on('click', function() { handleMouseClick(this, left, right) })
     
     let rects = groups.selectAll('rect.map')
-    rects.attr('width', maxWidth*(1-margin.left-margin.right)/24)
+    rects.attr('width', maxWidth*(1-margin.left-margin.right)/fakeData.studyCases[0].averagedValues.length)
     .attr('height', 20)
     .attr('x', (d, i) => horizontalScale(i))
     .attr('fill', (d) => colorScale(d))
