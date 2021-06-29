@@ -52,7 +52,6 @@ import * as algorithm from './scripts/algorithm.js'
         d3.csv("../assets/data/case20-50.csv", d3.autoType),
     ]).then(function(cases) {
 
-        console.log(cases)
         build()
 
         function build(){
@@ -61,8 +60,8 @@ import * as algorithm from './scripts/algorithm.js'
             heatMapsDimensions.build(cases)
             lineGraphs.build()
             equation.build()
-            metric.build()
             algorithm.build(cases)
+            metric.build(cases)
         }
 
         window.addEventListener('resize', () => {
