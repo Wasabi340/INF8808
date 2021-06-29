@@ -27,7 +27,7 @@ function getFakeData(){
     return data
 }
 
-function rearangeData(cases) {
+function rearrangeData(cases) {
 
     let data = {
         studyCases: [] //Dimensions
