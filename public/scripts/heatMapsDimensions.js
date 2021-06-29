@@ -1,31 +1,6 @@
-//let rgb = d3.select(this).attr('fill').match(/\d+/g);
-//return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2] < 60 ? 'white' : 'black'
-
 import { addGraph, deleteAllCurrentGraphs, removeGraph } from "./lineGraphs.js"
 
 let fakeData
-
-function getFakeData(){
-    
-    let data = {
-        studyCases: []
-    }
-    
-    for(let i = 0; i < 40; i++){
-        
-        data.studyCases.push({
-            name:`Dimension ${i+1}`,
-            metric:Math.floor(Math.random() * 101),
-            values:[]
-        })
-        
-        for (let j = 0; j < 24; j++){
-            data.studyCases[i].values.push(j/24)
-        }
-    }
-    
-    return data
-}
 
 function rearrangeData(cases) {
 
@@ -90,7 +65,6 @@ function rearrangeData(cases) {
 }
 
 export function build (cases) {
-    console.log('building heatmaps')
 
     d3.select('.heat-maps svg')
     .attr('width', '100%')
@@ -219,7 +193,7 @@ export function build (cases) {
     .attr('value', (d, i) => i+1)
 
     d3.select('select.dimension')
-    .on('change', function() {turnAllOff(left); console.log(eval(d3.select(this).property('value')))})
+    .on('change', function() {turnAllOff(left); })
 
     d3.selectAll('.dimension').style('display', 'none')
 }
@@ -247,10 +221,7 @@ function handleMouseClick(g, left, right){
         .attr('fill', d.on? 'silver' : 'black')
         d.on = !d.on
 
-        console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
         if (d.on){
-            console.log(d.number)
-            console.log("Calling linegraph build function for " + d.name)
             let data = {
                 //This is the data to send over to the line graph to display it
                 //values (number[]): Represented in which ever dimension we are toggling
@@ -259,7 +230,6 @@ function handleMouseClick(g, left, right){
             }
             addGraph(d.name,data)
         } else {
-            console.log("Calling linegraph remove function for " + d.name)
             removeGraph(d.name)
         }
         return result
@@ -267,8 +237,6 @@ function handleMouseClick(g, left, right){
 }
 
 function turnAllOff(left){
-
-    console.log("Calling linegraph remove function for all")
 
     d3.selectAll('.dimension .toggle')
     .transition()

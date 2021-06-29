@@ -1,33 +1,6 @@
-//let rgb = d3.select(this).attr('fill').match(/\d+/g);
-//return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2] < 60 ? 'white' : 'black'
-
 import { addGraph, removeGraph } from "./lineGraphs.js"
 
 let fakeData
-
-function getFakeData(){
-    
-    let data = {
-        studyCases: []
-    }
-    
-    //console.log(d3.select('.algorithm svg').select('text').property('name'))
-    
-    for(let i = 0; i < 40; i++){
-        
-        data.studyCases.push({
-            name:`Case ${i+1}`,
-            metric:Math.floor(Math.random() * 101),
-            values:[]
-        })
-        
-        for (let j = 0; j < 24; j++){
-            data.studyCases[i].values.push(j/24)
-        }
-    }
-    
-    return data
-}
 
 function rearrangeData(cases) {
     
@@ -75,9 +48,7 @@ function rearrangeData(cases) {
 }
 
 
-export function build (cases) {
-    console.log('building heatmaps')
-    
+export function build (cases) { 
     d3.select('.heat-maps svg')
     .attr('width', '100%')
     .attr('height', '200%')
@@ -191,8 +162,6 @@ export function build (cases) {
     .attr('fill', 'white')
     .on('click', function() { handleMouseClick(this, left, right) })
     
-    console.log(fakeData.studyCases[0].averagedValues.length)
-    
     let rects = groups.selectAll('rect.map')
     rects.attr('width', maxWidth*(1-margin.left-margin.right)/fakeData.studyCases[0].averagedValues.length)
     .attr('height', 20)
@@ -223,15 +192,10 @@ function handleMouseClick(g, left, right){
         d3.select(g.parentNode).select('.switch')
         .attr('fill', d.on? 'silver' : 'black')
         d.on = !d.on
-        
-        console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
         if (d.on){
-            console.log(d.number)
-            console.log("Calling linegraph build function for " + d.name)
             let data = fakeData.studyCases[d.number]
             addGraph(d.name,data)
         } else {
-            console.log("Calling linegraph remove function for " + d.name)
             removeGraph(d.name)
         }
         return result

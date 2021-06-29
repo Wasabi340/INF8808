@@ -35,7 +35,6 @@ function rearangeData(cases) {
 }
 
 export function build (cases) {
-    console.log('building algorithm')
 
     d3.select('.algorithm svg')
     .attr('width', '100%')
