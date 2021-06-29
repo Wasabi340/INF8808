@@ -18,8 +18,6 @@ function rearrangeData(cases) {
         selected_case = d3.select('#case-selector').property('value')
     }
 
-    console.log(selected_case)
-
     let columns = Object.getOwnPropertyNames(cases[0][0])
     let dimensions = columns.slice(2, 54)
     
@@ -67,8 +65,6 @@ function rearrangeData(cases) {
 }
 
 export function build (cases) {
-
-    console.log('yo')
 
     d3.select('.heat-maps svg')
     .attr('width', '100%')

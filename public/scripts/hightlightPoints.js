@@ -1,7 +1,6 @@
 import { highlightPoints } from "./lineGraphs.js"
 
 export function build (cases) {
-    console.log('building highlights')
 
     d3.select('.highlight-points svg')
     .attr('width', '100%')
