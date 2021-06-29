@@ -190,7 +190,7 @@ export function build (cases) {
     .attr('fill', (d) => colorScale(d))
 
     d3.select('select.dimension').selectAll('option')
-    .data(fakeData.studyCases)
+    .data(cases)
     .enter()
     .append('option')
     .text((d,i) => `Case ${i+1}`)
