@@ -85,7 +85,7 @@ export function addGraph(title,data){
 
     let gridWidth = g.node().getBoundingClientRect().width
     let xExtremums = [0,2000] //This value changes based on the given data of the graph
-    let yExtremums = [d3.extent(data.loss_mae)] //This value changes based on the given data of the graph
+    let yExtremums = [d3.min(data.values,(d) => d.value),d3.max(data.values,(d) => d.value)] //This value changes based on the given data of the graph
     let xScale = d3.scaleLinear()
     .domain(xExtremums)
     .range([graphMargins.left*gridWidth,gridWidth-graphMargins.right*gridWidth])
@@ -100,12 +100,12 @@ export function addGraph(title,data){
     .call(d3.axisLeft(yScale));
 
     graph.selectAll('circle')
-    .data(data) //Select the data points of the given graph
+    .data(data.values) //Select the data points of the given graph
     .enter()
     .append('circle')
-    .attr('class',function (d,i) {return d.pointType[i]})
+    .attr('class',function (d,i) {return d[i].pointType})
     .attr("cx", function (d,i) { return xScale(i); } )
-    .attr("cy", function (d,i) { return yScale(d.value[i]); } )
+    .attr("cy", function (d,i) { return yScale(d[i].value); } )
     .attr("r", 3)
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
@@ -166,7 +166,6 @@ function redrawGraphs(){
 /**
  * 
  * @param {string} type The type of point to highlight
- * @param {boolean} isHighlight Whether to highlight a point or remove highlight from a point
  */
 export function highlightPoints(type){
     
