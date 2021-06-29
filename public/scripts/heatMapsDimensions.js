@@ -139,7 +139,7 @@ export function build (cases) {
     
     let names = groups.selectAll('text.name')
     names.attr('x', maxWidth/2)
-    .attr('y', 0)
+    .attr('y', -5)
     .attr('text-anchor', 'middle')
     
     let metrics = groups.selectAll('text.metric')
@@ -218,7 +218,14 @@ function handleMouseClick(g, left, right){
         console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
         if (d.on){
             console.log("Calling linegraph build function for " + d.name)
-            addGraph(d.name)
+            let data = {
+                //This is the data to send over to the line graph to display it
+                //values (number[]): Represented in which ever dimension we are toggling
+                //pointType (string[]): Represented in the "Algo_XpointType" column
+                values:null,
+                pointType:null
+            }
+            addGraph(d.name,data)
         } else {
             console.log("Calling linegraph remove function for " + d.name)
             removeGraph(d.name)
