@@ -92,7 +92,7 @@ export function build (data) {
     
     let names = groups.selectAll('text.name')
     names.attr('x', maxWidth/2)
-    .attr('y', 0)
+    .attr('y', -5)
     .attr('text-anchor', 'middle')
     
     let metrics = groups.selectAll('text.metric')
