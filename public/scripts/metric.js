@@ -18,8 +18,7 @@ export function build (cases) {
     if (!d3.select('.algorithm svg').select('text').empty()) {
         algo = d3.select('.algorithm svg').select('text').property('value')
     }
-
-    let aggregatedMetricValue = (algo=="Algo1") ? cases[0][0].Algo1_aggregatedMetric : cases[0][0].Algo2_aggregatedMetric
+    let aggregatedMetricValue = (algo=="Algo1" || algo == undefined) ? cases[0][0].Algo1_aggregatedMetric : cases[0][0].Algo2_aggregatedMetric
 
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
