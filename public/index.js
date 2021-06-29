@@ -2,7 +2,6 @@ import * as menu from './scripts/menu.js'
 import * as heatMapsCases from './scripts/heatMapsCases.js'
 import * as heatMapsDimensions from './scripts/heatMapsDimensions.js'
 import * as lineGraphs from './scripts/lineGraphs.js'
-import * as equation from './scripts/equation.js'
 import * as metric from './scripts/metric.js'
 import * as algorithm from './scripts/algorithm.js'
 import * as highlightPoints from './scripts/hightlightPoints.js'
@@ -60,7 +59,6 @@ import * as highlightPoints from './scripts/hightlightPoints.js'
             heatMapsCases.build(cases)
             heatMapsDimensions.build(cases)
             lineGraphs.build()
-            equation.build()
             algorithm.build(cases)
             metric.build(cases)
             highlightPoints.build()
