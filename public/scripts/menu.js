@@ -103,11 +103,23 @@ function handleMouseClick(data){
     
                 d3.select('#aggregated-metric').style('display', 'block')
                 d3.select('#adaptive-metric').style('display', 'none')
+
+                d3.select('#ad-m1').style('display', 'none')
+                d3.select('#ad-m2').style('display', 'none')
+                d3.select('#ad-m3').style('display', 'none')
+                d3.select('#ad-m4').style('display', 'none')
+                d3.select('#ag-m1').style('display', 'block')
         
             } else {
         
                 d3.select('#aggregated-metric').style('display', 'none')
                 d3.select('#adaptive-metric').style('display', 'block')
+
+                d3.select('#ag-m1').style('display', 'none')
+                d3.select('#ad-m1').style('display', 'block')
+                d3.select('#ad-m2').style('display', 'block')
+                d3.select('#ad-m3').style('display', 'block')
+                d3.select('#ad-m4').style('display', 'block')
         
             }
 

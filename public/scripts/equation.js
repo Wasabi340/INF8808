@@ -1,67 +1,9 @@
 export function build (data) {
 
-    d3.select('.equation svg')
-    .attr('width', '100%')
-    .attr('height', '100%')
-    
-    let g = d3.select('.equation svg')
-
-    let terms = [
-        {id:0,value:'M(r^d(t))',on:true},
-        {id:1,value:'M(r^L_i(t))',on:true},
-        {id:2,value:'r^d(t)',on:true},
-        {id:3,value:'r^L_i(t)',on:true},
-    ]
-
-    let maxWidth = g.node().getBoundingClientRect().width
-    let maxHeight = g.node().getBoundingClientRect().height
-
-    let equation = g.select('#computed').node() ? g.select('#computed') : g.append('text')
-
-    equation.text('Computed equation : ' + computeEquation(terms))
-    .attr('x', maxWidth/10)
-    .attr('y', maxHeight/4)
-    .attr('dominant-baseline', 'middle')
-    .attr('id', 'computed')
-
-    let highlight = g.select('#highlight').node() ? g.select('#highlight') : g.append('rect')
-
-    let equationWidth = equation.node().getBoundingClientRect().width
-    let equationHeight = equation.node().getBoundingClientRect().height
-
-    highlight.attr('x', maxWidth/10)
-    .attr('y', maxHeight/4 - equationHeight/2)
-    .attr('width', equationWidth)
-    .attr('height', equationHeight)
-    .attr('fill', '#88A3CD')
-    .attr('fill-opacity', 0)
-    .attr('id', 'highlight')
-
-    g.selectAll('rect.button')
-    .data(terms)
-    .enter()
-    .append('rect')
-    .attr('x', (d, i) => maxWidth/5 + 100 * i - 50)
-    .attr('y', maxHeight/2 - 35)
-    .attr('width', 100)
-    .attr('height', 70)
-    .attr('fill', 'LightGreen')
-    .on('click', handleMouseClick)
-    .attr('cursor', 'pointer')
-    .attr('id', (d) => `button${d.id}`)
-    .attr('class', 'button')
-
-    g.selectAll('text.term')
-    .data(terms)
-    .enter()
-    .append('text')
-    .attr('class', 'term')
-    .text((d) => d.value)
-    .attr('x', (d, i) => maxWidth/5 + 100 * i)
-    .attr('y', maxHeight/2)
-    .attr('text-anchor', 'middle')
-    .attr('dominant-baseline', 'middle')
-    .attr('pointer-events', 'none')
+    d3.select('#ad-m1').style('display', 'none')
+    d3.select('#ad-m2').style('display', 'none')
+    d3.select('#ad-m3').style('display', 'none')
+    d3.select('#ad-m4').style('display', 'none')
 }
 
 function computeEquation(terms){
