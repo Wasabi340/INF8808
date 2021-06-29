@@ -9,9 +9,9 @@ export function build (cases) {
 
     let combinations = [
         {id:'TP_button', name:'True positives', target:'TP'},
-        {id:'FP_button', name:'True positives', target:'FP'},
-        {id:'TN_button', name:'True positives', target:'TN'},
-        {id:'FN_button', name:'True positives', target:'FN'},
+        {id:'FP_button', name:'False positives', target:'FP'},
+        {id:'TN_button', name:'True negatives', target:'TN'},
+        {id:'FN_button', name:'False negatives', target:'FN'},
         {id:'None_button', name:'None', target:'None'}
     ]
 
