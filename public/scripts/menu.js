@@ -1,4 +1,3 @@
-
 const colors = [
     {
         id:'globalGrad',
@@ -100,6 +99,18 @@ function handleMouseClick(data){
 
             d3.selectAll(`.${visible}`).style('display', 'block')
             d3.selectAll(`.${hidden}`).style('display', 'none')
+
+            if (isGlobal) {
+    
+                d3.select('#aggregated-metric').style('display', 'block')
+                d3.select('#adaptive-metric').style('display', 'none')
+        
+            } else {
+        
+                d3.select('#aggregated-metric').style('display', 'none')
+                d3.select('#adaptive-metric').style('display', 'block')
+        
+            }
 
             
         }
