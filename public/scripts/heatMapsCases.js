@@ -3,6 +3,8 @@
 
 import { addGraph, removeGraph } from "./lineGraphs.js"
 
+let fakeData
+
 function getFakeData(){
     
     let data = {
@@ -82,7 +84,7 @@ export function build (cases) {
     
     let g = d3.select('.heat-maps svg')
     
-    let fakeData = rearrangeData(cases)
+    fakeData = rearangeData(cases)
     
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
@@ -168,7 +170,7 @@ export function build (cases) {
     
     let left = maxWidth - margin.right*maxWidth/2 - switchWidth/2 + 10
     let right = maxWidth - margin.right*maxWidth/2 + switchWidth/2 - 10
-    
+
     let switches = groups.selectAll('rect.switch')
     switches.attr('width', switchWidth)
     .attr('height', 20)
@@ -179,7 +181,7 @@ export function build (cases) {
     .attr('stroke-width', 1)
     .attr('rx', 10)
     .attr('ry', 10)
-    .on('click', function() { handleMouseClick(this, left, right, fakeData) })
+    .on('click', function() { handleMouseClick(this, left, right) })
     
     let toggles = groups.selectAll('circle.toggle')
     
@@ -210,7 +212,8 @@ function handleMouseOut(){
     .attr('transform', 'translate(0, 0)')
 }
 
-function handleMouseClick(g, left, right, fakeData){
+function handleMouseClick(g, left, right){
+
     d3.select(g.parentNode).select('.toggle')
     .transition()
     .duration(100)
