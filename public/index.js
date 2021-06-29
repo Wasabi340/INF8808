@@ -5,6 +5,7 @@ import * as lineGraphs from './scripts/lineGraphs.js'
 import * as equation from './scripts/equation.js'
 import * as metric from './scripts/metric.js'
 import * as algorithm from './scripts/algorithm.js'
+import * as highlightPoints from './scripts/hightlightPoints.js'
 
 
 (function (d3) {
@@ -62,6 +63,7 @@ import * as algorithm from './scripts/algorithm.js'
             equation.build()
             algorithm.build(cases)
             metric.build(cases)
+            highlightPoints.build()
         }
 
         window.addEventListener('resize', () => {
