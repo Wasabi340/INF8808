@@ -105,7 +105,7 @@ export function build (cases) {
     let margin = {
         top:0.03,
         bottom:0.03,
-        left:0.20,
+        left:0.05,
         right:0.20
     }
     
