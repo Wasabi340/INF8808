@@ -101,7 +101,7 @@ export function addGraph(title,data){
     .data(data.dataPoints) //Select the data points of the given graph
     .enter()
     .append('circle')
-    .attr('class',function (d) {return d.pointType})
+    .attr('class',function (d) {return d.type})
     .attr("cx", function (d,i) { return xScale(i); } )
     .attr("cy", function (d,i) { return yScale(d.value); } )
     .attr("r", 3)
