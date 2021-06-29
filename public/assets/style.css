@@ -37,6 +37,7 @@
   background-color: #DAE8FC;
   margin-right: 10px;
   margin-bottom: 10px;
+  overflow-y:scroll;
 }
 
 .algorithm { 
