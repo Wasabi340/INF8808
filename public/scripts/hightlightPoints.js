@@ -1,3 +1,5 @@
+import { highlightPoints } from "./lineGraphs.js"
+
 export function build (cases) {
     console.log('building highlights')
 
@@ -57,14 +59,7 @@ function handleMouseClick(){
     d3.selectAll('rect.highlightButton').attr('fill', 'silver')
     d3.select(this).attr('fill', '#ff6666')
     
-    d3.selectAll('.TP').style('fill', 'rgb(68,1,84)')
-    d3.selectAll('.FP').style('fill', 'rgb(68,1,84)')
-    d3.selectAll('.TN').style('fill', 'rgb(68,1,84)')
-    d3.selectAll('.FN').style('fill', 'rgb(68,1,84)')
-    if(data.target != 'None'){
-        d3.selectAll(`.${data.target}`).style('fill', 'red')
-    }
-
+    highlightPoints(data.target)
 }
 
 function handleMouseUp(){

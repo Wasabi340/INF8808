@@ -1,24 +1,5 @@
 import { isGlobal } from "./menu.js";
 
-function getFakeData(){
-    
-    let data = {
-        graphs: []
-    }
-    
-    for(let i = 0; i < 40; i ++){
-        data.graphs.push({
-            name:`Case ${i+1}`,
-            metric:Math.floor(Math.random() * 101),
-            points:[]
-        })
-        for(let j = 0; j < 100; j++){
-            data.graphs[i].points.push([Math.random()*101,Math.random()*101]);
-        }
-    }
-    
-    return data
-}
 const windowHeight = [0,7500];
 const graphScale = d3.scaleLinear()
 .domain([0, 40])
@@ -104,8 +85,10 @@ export function addGraph(title,data){
     .attr("cx", function (d,i) { return xScale(i); } )
     .attr("cy", function (d,i) { return yScale(d.value); } )
     .attr("r", 3)
-    .style("fill", "#440154ff" )
-    .style("opacity", 0.5)
+    .attr("fill", "#440154ff")
+    .attr("opacity", 0.5)
+
+    highlightPoints(currentHighlight)
 
     graph.select('#name')
     .attr('x', gridWidth/2)
@@ -160,17 +143,17 @@ function redrawGraphs(){
         entry.graph.attr('transform',`translate (0, ${graphScale(index)})`);
     })
 }
+let currentHighlight = 'none';
 /**
  * 
  * @param {string} type The type of point to highlight
  */
 export function highlightPoints(type){
-    
+    currentHighlight = type
     d3.select('.line-graphs svg')
     .selectAll((isGlobal) ? '.case' : '.dimension')
     .selectAll('circle')
     .attr('fill', "#440154ff")
-    
     d3.select('.line-graphs svg')
     .selectAll((isGlobal) ? '.case' : '.dimension')
     .selectAll(`circle.${type}`)
