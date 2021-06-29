@@ -1,7 +1,6 @@
 import { isGlobal } from "./menu.js";
 
 export function build (cases) {
-    console.log('building metric')
     
     d3.select('.metric svg')
     .attr('width', '100%')

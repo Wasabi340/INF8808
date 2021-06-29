@@ -11,7 +11,6 @@ const colors = [
 export let isGlobal = true;
 
 export function build () {
-    console.log('building menu')
     
     d3.select('.menu svg')
     .attr('width', '100%')

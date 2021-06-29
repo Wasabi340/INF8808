@@ -1,33 +1,8 @@
-//let rgb = d3.select(this).attr('fill').match(/\d+/g);
-//return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2] < 60 ? 'white' : 'black'
-
 import { addGraph, removeGraph } from "./lineGraphs.js"
 
-function getFakeData(){
-    
-    let data = {
-        studyCases: []
-    }
-    
-    //console.log(d3.select('.algorithm svg').select('text').property('name'))
-    
-    for(let i = 0; i < 40; i++){
-        
-        data.studyCases.push({
-            name:`Case ${i+1}`,
-            metric:Math.floor(Math.random() * 101),
-            values:[]
-        })
-        
-        for (let j = 0; j < 24; j++){
-            data.studyCases[i].values.push(j/24)
-        }
-    }
-    
-    return data
-}
+let fakeData
 
-function rearangeData(cases) {
+function rearrangeData(cases) {
     
     let data = {
         studyCases: []
@@ -44,13 +19,13 @@ function rearangeData(cases) {
         data.studyCases.push({
             name:`Case ${index+1}`,
             metric: metric, 
-            values:[]
+            dataPoints:[]
         })
         
         case_study.forEach((point) => {
             let pointValue = (algo=="Algo1") ? point.Algo1_loss_mae : point.Algo2_loss_mae
             let pointType = (algo=="Algo1") ? point.Algo1_pointType : point.Algo2_pointType
-            data.studyCases[index].values.push({value: pointValue, type: pointType})
+            data.studyCases[index].dataPoints.push({value: pointValue, type: pointType})
         })
         index = index+1
     })
@@ -60,10 +35,10 @@ function rearangeData(cases) {
         let n = 50
         
         const res = [];
-        for (let i = 0; i < element.values.length;) {
+        for (let i = 0; i < element.dataPoints.length;) {
             let sum = 0;
             for(let j = 0; j < n; j++){
-                sum += +element.values[i++].value || 0;
+                sum += +element.dataPoints[i++].value || 0;
             };
             res.push(sum / n);
         }
@@ -73,16 +48,14 @@ function rearangeData(cases) {
 }
 
 
-export function build (cases) {
-    console.log('building heatmaps')
-    
+export function build (cases) { 
     d3.select('.heat-maps svg')
     .attr('width', '100%')
     .attr('height', '200%')
     
     let g = d3.select('.heat-maps svg')
     
-    let fakeData = rearangeData(cases)
+    fakeData = rearrangeData(cases)
     
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
@@ -168,7 +141,7 @@ export function build (cases) {
     
     let left = maxWidth - margin.right*maxWidth/2 - switchWidth/2 + 10
     let right = maxWidth - margin.right*maxWidth/2 + switchWidth/2 - 10
-    
+
     let switches = groups.selectAll('rect.switch')
     switches.attr('width', switchWidth)
     .attr('height', 20)
@@ -179,7 +152,7 @@ export function build (cases) {
     .attr('stroke-width', 1)
     .attr('rx', 10)
     .attr('ry', 10)
-    .on('click', function() { handleMouseClick(this, left, right, fakeData) })
+    .on('click', function() { handleMouseClick(this, left, right) })
     
     let toggles = groups.selectAll('circle.toggle')
     
@@ -188,8 +161,6 @@ export function build (cases) {
     .attr('r', 8)
     .attr('fill', 'white')
     .on('click', function() { handleMouseClick(this, left, right) })
-    
-    console.log(fakeData.studyCases[0].averagedValues.length)
     
     let rects = groups.selectAll('rect.map')
     rects.attr('width', maxWidth*(1-margin.left-margin.right)/fakeData.studyCases[0].averagedValues.length)
@@ -210,7 +181,8 @@ function handleMouseOut(){
     .attr('transform', 'translate(0, 0)')
 }
 
-function handleMouseClick(g, left, right, fakeData){
+function handleMouseClick(g, left, right){
+
     d3.select(g.parentNode).select('.toggle')
     .transition()
     .duration(100)
@@ -220,21 +192,10 @@ function handleMouseClick(g, left, right, fakeData){
         d3.select(g.parentNode).select('.switch')
         .attr('fill', d.on? 'silver' : 'black')
         d.on = !d.on
-        
-        console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
         if (d.on){
-            console.log(d.number)
-            console.log("Calling linegraph build function for " + d.name)
-            let data = {
-                //This is the data to send over to the line graph to display it
-                //values (number[]): Represented in which ever dimension we are toggling
-                //pointType (string[]): Represented in the "Algo_XpointType" column
-                //metric (number): Value is repeated over the array, but we only need a single value
-                values:fakeData.studyCases[d.number]
-            }
+            let data = fakeData.studyCases[d.number]
             addGraph(d.name,data)
         } else {
-            console.log("Calling linegraph remove function for " + d.name)
             removeGraph(d.name)
         }
         return result

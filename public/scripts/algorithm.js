@@ -1,20 +1,3 @@
-function getFakeData(){
-    
-    let data = {
-        algorithms: []
-    }
-    
-    for(let i = 0; i < 5; i++){
-        
-        data.algorithms.push({
-            name:`Algorithm ${i + 1}`,
-            metric:Math.floor(Math.random() * 101),
-        })
-    }
-    
-    return data
-}
-
 function rearangeData(cases) {
 
     let data = {
@@ -35,7 +18,6 @@ function rearangeData(cases) {
 }
 
 export function build (cases) {
-    console.log('building algorithm')
 
     d3.select('.algorithm svg')
     .attr('width', '100%')
