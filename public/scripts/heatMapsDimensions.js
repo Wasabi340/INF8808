@@ -98,7 +98,7 @@ export function build (cases) {
     
     let g = d3.select('.heat-maps svg')
     
-    fakeData = rearangeData(cases)
+    fakeData = rearrangeData(cases)
     
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height

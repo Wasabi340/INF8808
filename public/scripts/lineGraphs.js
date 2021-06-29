@@ -66,7 +66,6 @@ export function addGraph(title,data){
         right:0.2,
         left:0.2,
     }
-    let fakeData = getFakeData().graphs[0];
     let g = d3.select('.line-graphs svg')
     let graph = g.append('g')
     .attr('class',(isGlobal) ? 'case' : 'dimension')
@@ -82,10 +81,9 @@ export function addGraph(title,data){
         .attr('class', (isGlobal) ? 'case' : 'dimension')
         .attr('id','metric')
         .text(data.metric)
-
     let gridWidth = g.node().getBoundingClientRect().width
     let xExtremums = [0,2000] //This value changes based on the given data of the graph
-    let yExtremums = [d3.min(data.values,(d) => d.value),d3.max(data.values,(d) => d.value)] //This value changes based on the given data of the graph
+    let yExtremums = [d3.min(data.dataPoints,(d) => d.value),d3.max(data.dataPoints,(d) => d.value)] //This value changes based on the given data of the graph
     let xScale = d3.scaleLinear()
     .domain(xExtremums)
     .range([graphMargins.left*gridWidth,gridWidth-graphMargins.right*gridWidth])
@@ -100,12 +98,12 @@ export function addGraph(title,data){
     .call(d3.axisLeft(yScale));
 
     graph.selectAll('circle')
-    .data(data.values) //Select the data points of the given graph
+    .data(data.dataPoints) //Select the data points of the given graph
     .enter()
     .append('circle')
-    .attr('class',function (d,i) {return d[i].pointType})
+    .attr('class',function (d) {return d.pointType})
     .attr("cx", function (d,i) { return xScale(i); } )
-    .attr("cy", function (d,i) { return yScale(d[i].value); } )
+    .attr("cy", function (d,i) { return yScale(d.value); } )
     .attr("r", 3)
     .style("fill", "#440154ff" )
     .style("opacity", 0.5)
