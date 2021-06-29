@@ -1,4 +1,4 @@
-export function build (data) {
+export function build (cases) {
     console.log('building metric')
     
     d3.select('.metric svg')
@@ -9,7 +9,14 @@ export function build (data) {
 
     let metric = g.select('text').node() ? g.select('text') : g.append('text')
 
-    let metricValue = 88
+    let algo = "Algo1"
+    if (!d3.select('.algorithm svg').select('text').empty()) {
+        algo = d3.select('.algorithm svg').select('text').property('value')
+    }
+
+    console.log(cases)
+    
+    let metricValue = (algo=="Algo1") ? cases[0][0].Algo1_aggregatedMetric : cases[0][0].Algo1_aggregatedMetric
 
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
