@@ -144,6 +144,7 @@ export function build (cases) {
     
     init.append('circle')
     .attr('class', 'toggle')
+    .attr('number', (d,i) => d.number = i)
     .attr('cursor', 'pointer')
     
     init.selectAll('rect.map')
@@ -227,15 +228,14 @@ function handleMouseClick(g, left, right){
         
         console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
         if (d.on){
+            console.log(d.number)
             console.log("Calling linegraph build function for " + d.name)
             let data = {
                 //This is the data to send over to the line graph to display it
                 //values (number[]): Represented in which ever dimension we are toggling
                 //pointType (string[]): Represented in the "Algo_XpointType" column
                 //metric (number): Value is repeated over the array, but we only need a single value
-                values:null,
-                pointType:null,
-                metric:null
+                values:fakeData.studyCases[d.number]
             }
             addGraph(d.name,data)
         } else {
