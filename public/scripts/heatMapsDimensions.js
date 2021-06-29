@@ -28,7 +28,7 @@ function rearrangeData(cases) {
         data.studyCases.push({
             name: dimension,
             metric: metric,
-            values:[]
+            dataPoints:[]
         })
 
         let min = 9999
@@ -41,7 +41,7 @@ function rearrangeData(cases) {
         cases[selected_case-1].forEach((point) => {
             let pointValue = point[dimension]
             let pointType = (algo=="Algo1") ? point.Algo1_pointType : point.Algo2_pointType
-            data.studyCases[index].values.push({value: pointValue, valueNorm:(pointValue-min)/(max-min), type: pointType})
+            data.studyCases[index].dataPoints.push({value: pointValue, valueNorm:(pointValue-min)/(max-min), type: pointType})
         })
         index = index+1
     })
@@ -51,10 +51,10 @@ function rearrangeData(cases) {
         let n = 50
         
         const res = [];
-        for (let i = 0; i < element.values.length;) {
+        for (let i = 0; i < element.dataPoints.length;) {
             let sum = 0;
             for(let j = 0; j < n; j++){
-                sum += +element.values[i++].valueNorm || 0;
+                sum += +element.dataPoints[i++].valueNorm || 0;
             };
             res.push(sum / n);
         }
@@ -222,12 +222,7 @@ function handleMouseClick(g, left, right){
         d.on = !d.on
 
         if (d.on){
-            let data = {
-                //This is the data to send over to the line graph to display it
-                //values (number[]): Represented in which ever dimension we are toggling
-                //pointType (string[]): Represented in the "Algo_XpointType" column
-                values:fakeData.studyCases[d.number]
-            }
+            let data = fakeData.studyCases[d.number]
             addGraph(d.name,data)
         } else {
             removeGraph(d.name)
