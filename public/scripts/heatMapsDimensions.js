@@ -69,6 +69,21 @@ function rearangeData(cases) {
         index = index+1
     })
 
+    data.studyCases.forEach(element => {
+
+        let n = 50
+        
+        const res = [];
+        for (let i = 0; i < element.values.length;) {
+            let sum = 0;
+            for(let j = 0; j < n; j++){
+                sum += +element.values[i++].valueNorm || 0;
+            };
+            res.push(sum / n);
+        }
+        element.averagedValues = res
+    });
+
     return data
 }
 
@@ -77,7 +92,7 @@ export function build (cases) {
 
     d3.select('.heat-maps svg')
     .attr('width', '100%')
-    .attr('height', '200%')
+    .attr('height', '250%')
     
     let g = d3.select('.heat-maps svg')
     
@@ -97,11 +112,25 @@ export function build (cases) {
     .range([margin.top*maxHeight, maxHeight-margin.bottom*maxHeight])
     
     let horizontalScale = d3.scaleLinear()
-    .domain([0,fakeData.studyCases[0].values.length])
+    .domain([0,fakeData.studyCases[0].averagedValues.length])
     .range([margin.left*maxWidth,maxWidth-margin.right*maxWidth])
     
+    let minValue = 1
+    let maxValue = 0
+
+    fakeData.studyCases.forEach(element => {
+        element.averagedValues.forEach(element => {
+            if(element < minValue){
+                minValue = element
+            }
+            if(element > maxValue){
+                maxValue = element
+            }
+        });
+    });
+
     let colorScale = d3.scaleLinear()
-    .domain([0, 0.33, 0.66, 1])
+    .domain([minValue, minValue + (maxValue-minValue)/3,  minValue + (maxValue-minValue)/3 * 2, maxValue])
     .range(['blue', 'green', 'yellow', 'red'])
 
     let init = g.selectAll('g.dimension')
@@ -124,10 +153,11 @@ export function build (cases) {
     
     init.append('circle')
     .attr('class', 'toggle')
+    .attr('number', (d,i) => d.number = i)
     .attr('cursor', 'pointer')
     
     init.selectAll('rect.map')
-    .data((d) => d.values)
+    .data((d) => d.averagedValues)
     .enter()
     .append('rect')
     .attr('class', 'map')
@@ -163,7 +193,7 @@ export function build (cases) {
     .attr('stroke-width', 1)
     .attr('rx', 10)
     .attr('ry', 10)
-    .on('click', function() { handleMouseClick(this, left, right) })
+    .on('click', function() { handleMouseClick(this, left, right, fakeData) })
     
     let toggles = groups.selectAll('circle.toggle')
     
@@ -177,7 +207,7 @@ export function build (cases) {
     rects.attr('width', maxWidth*(1-margin.left-margin.right)/24)
     .attr('height', 20)
     .attr('x', (d, i) => horizontalScale(i))
-    .attr('fill', (d) => colorScale(d.valueNorm))
+    .attr('fill', (d) => colorScale(d))
 
     d3.select('select.dimension').selectAll('option')
     .data(fakeData.studyCases)
@@ -204,7 +234,7 @@ function handleMouseOut(){
     .attr('transform', 'translate(0, 0)')
 }
 
-function handleMouseClick(g, left, right){
+function handleMouseClick(g, left, right, fakeData){
     d3.select(g.parentNode).select('.toggle')
     .transition()
     .duration(100)
@@ -217,13 +247,13 @@ function handleMouseClick(g, left, right){
 
         console.log(`${d.name} is ${d.on? 'on' : 'off'}`)
         if (d.on){
+            console.log(d.number)
             console.log("Calling linegraph build function for " + d.name)
             let data = {
                 //This is the data to send over to the line graph to display it
                 //values (number[]): Represented in which ever dimension we are toggling
                 //pointType (string[]): Represented in the "Algo_XpointType" column
-                values:null,
-                pointType:null
+                values:fakeData.studyCases[d.number]
             }
             addGraph(d.name,data)
         } else {
