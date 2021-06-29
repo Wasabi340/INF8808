@@ -27,7 +27,7 @@ function getFakeData(){
     return data
 }
 
-function rearangeData(cases) {
+function rearrangeData(cases) {
     
     let data = {
         studyCases: []
@@ -82,7 +82,7 @@ export function build (cases) {
     
     let g = d3.select('.heat-maps svg')
     
-    let fakeData = rearangeData(cases)
+    let fakeData = rearrangeData(cases)
     
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
