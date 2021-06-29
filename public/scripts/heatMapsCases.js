@@ -48,8 +48,8 @@ function rearangeData(cases) {
         })
 
         case_study.forEach((point) => {
-            let pointValue = (algo=="Algo1") ? point.Algo1_loss_mae : case_study[0].point.Algo2_loss_mae
-            let pointType = (algo=="Algo1") ? point.Algo1_pointType : case_study[0].point.Algo2_pointType
+            let pointValue = (algo=="Algo1") ? point.Algo1_loss_mae : point.Algo2_loss_mae
+            let pointType = (algo=="Algo1") ? point.Algo1_pointType : point.Algo2_pointType
             data.studyCases[index].values.push({value: pointValue, type: pointType})
         })
         index = index+1

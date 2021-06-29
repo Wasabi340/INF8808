@@ -25,7 +25,54 @@ function getFakeData(){
     return data
 }
 
-export function build (data) {
+function rearangeData(cases) {
+
+    let data = {
+        studyCases: [] //Dimensions
+    }
+
+    let algo = "Algo1"
+    if (!d3.select('.algorithm svg').select('text').empty()) {
+        algo = d3.select('.algorithm svg').select('text').property('value')
+    }
+
+    let selected_case = 1
+    if (!d3.select('.dimension #case-selector').empty()) {
+        selected_case = d3.select('#case-selector').property('value')
+    }
+
+    let columns = Object.getOwnPropertyNames(cases[0][0])
+    let dimensions = columns.slice(2, 54)
+    
+    let index = 0
+    dimensions.forEach((dimension) => {
+        let metric = null
+        cases[selected_case-1]
+        data.studyCases.push({
+            name: dimension,
+            metric: metric,
+            values:[]
+        })
+
+        let min = 9999
+        let max = 0
+        cases[selected_case-1].forEach((point) => {
+            if (point[dimension]<min) { min = point[dimension] }
+            if (point[dimension]>max) { max = point[dimension] }
+        })
+
+        cases[selected_case-1].forEach((point) => {
+            let pointValue = point[dimension]
+            let pointType = (algo=="Algo1") ? point.Algo1_pointType : point.Algo2_pointType
+            data.studyCases[index].values.push({value: pointValue, valueNorm:(pointValue-min)/(max-min), type: pointType})
+        })
+        index = index+1
+    })
+
+    return data
+}
+
+export function build (cases) {
     console.log('building heatmaps')
 
     d3.select('.heat-maps svg')
@@ -34,7 +81,7 @@ export function build (data) {
     
     let g = d3.select('.heat-maps svg')
     
-    let fakeData = getFakeData()
+    let fakeData = rearangeData(cases)
     
     let maxWidth = g.node().getBoundingClientRect().width
     let maxHeight = g.node().getBoundingClientRect().height
@@ -130,7 +177,7 @@ export function build (data) {
     rects.attr('width', maxWidth*(1-margin.left-margin.right)/24)
     .attr('height', 20)
     .attr('x', (d, i) => horizontalScale(i))
-    .attr('fill', (d) => colorScale(d))
+    .attr('fill', (d) => colorScale(d.valueNorm))
 
     d3.select('select.dimension').selectAll('option')
     .data(fakeData.studyCases)
